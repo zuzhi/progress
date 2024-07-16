@@ -19,15 +19,17 @@ const getAll = async () => {
   }
 }
 
-const create = async ({ name }) => {
-  const { data, error } = await supabase
+const create = async ({ name, userId }) => {
+  const { data: project, error } = await supabase
     .from('project')
-    .insert({ name: name })
+    .insert({ name: name, user_id: userId })
     .select()
+    .single()
+
   if (error) {
     console.log(error)
   }
-  return data[0]
+  return project
 }
 
 const update = async (id, newName) => {
