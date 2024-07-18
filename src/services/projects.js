@@ -7,8 +7,33 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 const getAll = async () => {
   let { data: projects, error } = await supabase
-    .from('project')
+    .from('projects')
     .select('*')
+
+  if (projects) {
+    return projects
+  }
+
+  if (error) {
+    console.log(error)
+  }
+}
+
+const getAllWithReference = async () => {
+  let { data: projects, error } = await supabase
+    .from('projects')
+    .select(`
+      id,
+      name,
+      progress,
+      topics (
+        id,
+        project_id,
+        parent_topic_id,
+        name
+      )
+    `)
+    .order('id', { ascending: true })
 
   if (projects) {
     return projects
@@ -21,7 +46,7 @@ const getAll = async () => {
 
 const create = async ({ name, userId }) => {
   const { data: project, error } = await supabase
-    .from('project')
+    .from('projects')
     .insert({ name: name, user_id: userId })
     .select()
     .single()
@@ -34,7 +59,7 @@ const create = async ({ name, userId }) => {
 
 const update = async (id, newName) => {
   const { data, error } = await supabase
-    .from('project')
+    .from('projects')
     .update({ name: newName })
     .eq('id', id)
     .select()
@@ -46,9 +71,9 @@ const update = async (id, newName) => {
 
 const deleteProject = async (project) => {
   await supabase
-    .from('project')
+    .from('projects')
     .delete()
     .eq('id', project.id)
 }
 
-export default { getAll, create, update, deleteProject }
+export default { getAll, getAllWithReference, create, update, deleteProject }
