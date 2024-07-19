@@ -15,16 +15,22 @@ const Project = ({ project, onProjectDelete, onProjectEdit, onTopicDelete, onTop
   }
 
   const topicForm = () => (
-    <Togglable buttonLabel='new topic' ref={topicFormRef}>
+    <Togglable buttonLabel='new sub-topic' ref={topicFormRef}>
       <TopicForm createTopic={addTopic} />
     </Togglable>
   )
 
   return (
     <li>
+      <span className='project'>
       {project.name} - {project.progress}%
-      <button onClick={() => onProjectEdit(project)}>edit</button>
-      <button onClick={() => onProjectDelete(project)}>delete</button>
+      </span>
+      <span className='buttons'>
+        &nbsp;
+        <button onClick={() => onProjectEdit(project)}>edit</button>
+        <button onClick={() => onProjectDelete(project)}>delete</button>
+      </span>
+      {topicForm()}
       {
         project.topics && (
           <ul>
@@ -34,7 +40,6 @@ const Project = ({ project, onProjectDelete, onProjectEdit, onTopicDelete, onTop
           </ul>
         )
       }
-      {topicForm()}
     </li>
   )
 }

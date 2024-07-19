@@ -15,20 +15,26 @@ const Topic = ({ topic, onTopicDelete, onTopicEdit, onTopicAdd, onTopicStatusCha
   }
 
   const topicForm = () => (
-    <Togglable buttonLabel='new topic' ref={topicFormRef}>
+    <Togglable buttonLabel='new sub-topic' ref={topicFormRef}>
       <TopicForm createTopic={addTopic} />
     </Togglable>
   )
 
   return (
     <li>
-      {topic.name} - {topic.status}
-      <button onClick={() => onTopicEdit(topic)}>edit</button>
-      <button onClick={() => onTopicDelete(topic)}>delete</button>
-      <button onClick={() => onTopicStatusChange(topic, 'pending')}>pending</button>
-      <button onClick={() => onTopicStatusChange(topic, 'in progress')}>in progress</button>
-      <button onClick={() => onTopicStatusChange(topic, 'done')}>done</button>
-      <button onClick={() => onTopicStatusChange(topic, 'skip')}>skip</button>
+      <span className={topic.status.replace(' ', '-')}>
+      {topic.name}
+      </span>
+      <span className='buttons'>
+        &nbsp;
+        <button onClick={() => onTopicEdit(topic)}>edit</button>
+        <button onClick={() => onTopicDelete(topic)}>delete</button>
+        <button onClick={() => onTopicStatusChange(topic, 'pending')}>pending</button>
+        <button onClick={() => onTopicStatusChange(topic, 'in progress')}>in progress</button>
+        <button onClick={() => onTopicStatusChange(topic, 'done')}>done</button>
+        <button onClick={() => onTopicStatusChange(topic, 'skip')}>skip</button>
+      </span>
+      {topicForm()}
       {topic.subTopics && topic.subTopics.length > 0 && (
         <ul>
           {topic.subTopics.map(subTopic => (
@@ -36,7 +42,6 @@ const Topic = ({ topic, onTopicDelete, onTopicEdit, onTopicAdd, onTopicStatusCha
           ))}
         </ul>
       )}
-      {topicForm()}
     </li>
   )
 }

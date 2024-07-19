@@ -50,7 +50,6 @@ const getAllWithReference = async () => {
         status
       )
     `)
-    // FIXME multiple orders not working
     .order('id', { ascending: true })
     .order('id', { ascending: true, referencedTable: 'topics' })
 

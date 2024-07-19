@@ -34,7 +34,7 @@ const TopicEditForm = forwardRef(({ updateTopic }, refs) => {
           value={newTopic}
           onChange={event => setNewTopic(event.target.value)}
         />
-        <button type="submit">save</button>
+        <button type="submit">&nbsp;save</button>
       </form>
     </div>
   )

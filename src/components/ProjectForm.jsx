@@ -21,7 +21,7 @@ const ProjectForm = ({ createProject }) => {
           value={newProject}
           onChange={event => setNewProject(event.target.value)}
         />
-        <button type="submit">save</button>
+        <button type="submit">&nbsp;save</button>
       </form>
     </div>
   )

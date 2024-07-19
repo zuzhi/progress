@@ -15,13 +15,13 @@ const TopicForm = ({ createTopic }) => {
 
   return (
     <div>
-      <h3>Create a new topic</h3>
+      <h3>Create a new sub-topic</h3>
       <form onSubmit={addTopic}>
         <input
           value={newTopic}
           onChange={event => setNewTopic(event.target.value)}
         />
-        <button type="submit">save</button>
+        <button type="submit">&nbsp;save</button>
       </form>
     </div>
   )

@@ -12,6 +12,8 @@ import { createClient } from '@supabase/supabase-js'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 
+import './App.css'
+
 const supabaseUrl = 'https://melsspoompxwejtdxmzc.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbHNzcG9vbXB4d2VqdGR4bXpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAxNzAzODUsImV4cCI6MjAzNTc0NjM4NX0.kPDn_-Jmism7oKEGTDaq9QhErl_6h3xsWoR4Fnf-rDg'
 const supabase = createClient(supabaseUrl, supabaseKey)
@@ -186,7 +188,7 @@ function App() {
     console.log(projectUpdated)
     const newProjects = projects.map(project => ({
       ...project,
-      progress: projectUpdated.progress,
+      progress: project.id === projectUpdated.id ? projectUpdated.progress : project.progress,
       topics: updateTopicInNestedTopics(project.topics, topicUpdated)
     }))
     setProjects(newProjects)
@@ -266,12 +268,12 @@ function App() {
       <>
         <h2>Progress</h2>
         <p>
-          In case you need record the <strong>progress</strong> while getting things done.
+          In case you need to record the <strong>progress</strong> while getting things done.
         </p>
-        <Projects projects={projects} onProjectDelete={handleProjectDelete} onProjectEdit={handleProjectEdit} onTopicDelete={handleTopicDelete} onTopicEdit={handleTopicEdit} onTopicAdd={handleTopicAdd} onTopicStatusChange={handleTopicStatusChange} />
         {projectForm()}
         {projectEditForm()}
         {topicEditForm()}
+        <Projects projects={projects} onProjectDelete={handleProjectDelete} onProjectEdit={handleProjectEdit} onTopicDelete={handleTopicDelete} onTopicEdit={handleTopicEdit} onTopicAdd={handleTopicAdd} onTopicStatusChange={handleTopicStatusChange} />
         <button
           onClick={async () => {
             const { error } = await supabase.auth.signOut()
