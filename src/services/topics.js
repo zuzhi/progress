@@ -5,6 +5,21 @@ const supabaseUrl = 'https://melsspoompxwejtdxmzc.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbHNzcG9vbXB4d2VqdGR4bXpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAxNzAzODUsImV4cCI6MjAzNTc0NjM4NX0.kPDn_-Jmism7oKEGTDaq9QhErl_6h3xsWoR4Fnf-rDg'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+const getAllByProject = async (projectId) => {
+  let { data: topics, error } = await supabase
+    .from('topics')
+    .select()
+    .eq('project_id', projectId)
+
+  if (topics) {
+    return topics
+  }
+
+  if (error) {
+    console.log(error)
+  }
+}
+
 const create = async ({ name, project_id, parent_topic_id, userId }) => {
   const { data: topic, error } = await supabase
     .from('topics')
@@ -31,6 +46,19 @@ const update = async (id, newName) => {
   return topic
 }
 
+const updateStatus = async (id, newStatus) => {
+  const { data: topic, error } = await supabase
+    .from('topics')
+    .update({ status: newStatus })
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) {
+    console.log(error)
+  }
+  return topic
+}
+
 const deleteTopic = async (topic) => {
   await supabase
     .from('topics')
@@ -38,4 +66,4 @@ const deleteTopic = async (topic) => {
     .eq('id', topic.id)
 }
 
-export default { create, update, deleteTopic }
+export default { getAllByProject, create, update, updateStatus, deleteTopic }

@@ -19,6 +19,22 @@ const getAll = async () => {
   }
 }
 
+const getOne = async (projectId) => {
+  let { data: project, error } = await supabase
+    .from('projects')
+    .select()
+    .eq('id', projectId)
+    .single()
+
+  if (project) {
+    return project
+  }
+
+  if (error) {
+    console.log(error)
+  }
+}
+
 const getAllWithReference = async () => {
   let { data: projects, error } = await supabase
     .from('projects')
@@ -30,10 +46,13 @@ const getAllWithReference = async () => {
         id,
         project_id,
         parent_topic_id,
-        name
+        name,
+        status
       )
     `)
+    // FIXME multiple orders not working
     .order('id', { ascending: true })
+    .order('id', { ascending: true, referencedTable: 'topics' })
 
   if (projects) {
     return projects
@@ -69,6 +88,18 @@ const update = async (id, newName) => {
   return data[0]
 }
 
+const updateProgress = async (id, newProgress) => {
+  const { data, error } = await supabase
+    .from('projects')
+    .update({ progress: newProgress })
+    .eq('id', id)
+    .select()
+  if (error) {
+    console.log(error)
+  }
+  return data[0]
+}
+
 const deleteProject = async (project) => {
   await supabase
     .from('projects')
@@ -76,4 +107,4 @@ const deleteProject = async (project) => {
     .eq('id', project.id)
 }
 
-export default { getAll, getAllWithReference, create, update, deleteProject }
+export default { getAll, getOne, getAllWithReference, create, update, updateProgress, deleteProject }

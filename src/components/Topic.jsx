@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import Togglable from './Togglable'
 import TopicForm from './TopicForm'
 
-const Topic = ({ topic, onTopicDelete, onTopicEdit, onTopicAdd }) => {
+const Topic = ({ topic, onTopicDelete, onTopicEdit, onTopicAdd, onTopicStatusChange }) => {
   const topicFormRef = useRef()
 
   const addTopic = (topicObject) => {
@@ -22,17 +22,21 @@ const Topic = ({ topic, onTopicDelete, onTopicEdit, onTopicAdd }) => {
 
   return (
     <li>
-      {topic.name}
+      {topic.name} - {topic.status}
       <button onClick={() => onTopicEdit(topic)}>edit</button>
       <button onClick={() => onTopicDelete(topic)}>delete</button>
-      {topicForm()}
+      <button onClick={() => onTopicStatusChange(topic, 'pending')}>pending</button>
+      <button onClick={() => onTopicStatusChange(topic, 'in progress')}>in progress</button>
+      <button onClick={() => onTopicStatusChange(topic, 'done')}>done</button>
+      <button onClick={() => onTopicStatusChange(topic, 'skip')}>skip</button>
       {topic.subTopics && topic.subTopics.length > 0 && (
         <ul>
           {topic.subTopics.map(subTopic => (
-            <Topic key={subTopic.id} topic={subTopic} onTopicDelete={onTopicDelete} onTopicEdit={onTopicEdit} onTopicAdd={onTopicAdd} />
+            <Topic key={subTopic.id} topic={subTopic} onTopicDelete={onTopicDelete} onTopicEdit={onTopicEdit} onTopicAdd={onTopicAdd} onTopicStatusChange={onTopicStatusChange} />
           ))}
         </ul>
       )}
+      {topicForm()}
     </li>
   )
 }

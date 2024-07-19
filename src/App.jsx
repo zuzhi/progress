@@ -174,6 +174,38 @@ function App() {
     }
   }
 
+  const handleTopicStatusChange = async (topic, topicStatus) => {
+    const topicToUpdate = {
+      ...topic,
+      status: topicStatus
+    }
+    const topicUpdated = await topicService
+      .updateStatus(topicToUpdate.id, topicToUpdate.status)
+    console.log(topicUpdated)
+    const projectUpdated = await updateProgress(topicUpdated.project_id)
+    console.log(projectUpdated)
+    const newProjects = projects.map(project => ({
+      ...project,
+      progress: projectUpdated.progress,
+      topics: updateTopicInNestedTopics(project.topics, topicUpdated)
+    }))
+    setProjects(newProjects)
+  }
+
+  const updateProgress = async (projectId) => {
+    const topics = await topicService.getAllByProject(projectId)
+    const project = await projectService.getOne(projectId)
+    const finished = topics.filter(topic => topic.status === 'done' || topic.status === 'skip')
+    console.log(finished.length)
+    console.log(topics.length)
+    const newProject = {
+      ...project,
+      progress: Math.floor(finished.length / topics.length * 100)
+    }
+    await projectService.updateProgress(newProject.id, newProject.progress)
+    return newProject
+  }
+
   const handleTopicEdit = async (topicObject) => {
     console.log(topicObject)
     topicEditFormVisibleRef.current.setVisible(true)
@@ -236,7 +268,7 @@ function App() {
         <p>
           In case you need record the <strong>progress</strong> while getting things done.
         </p>
-        <Projects projects={projects} onProjectDelete={handleProjectDelete} onProjectEdit={handleProjectEdit} onTopicDelete={handleTopicDelete} onTopicEdit={handleTopicEdit} onTopicAdd={handleTopicAdd} />
+        <Projects projects={projects} onProjectDelete={handleProjectDelete} onProjectEdit={handleProjectEdit} onTopicDelete={handleTopicDelete} onTopicEdit={handleTopicEdit} onTopicAdd={handleTopicAdd} onTopicStatusChange={handleTopicStatusChange} />
         {projectForm()}
         {projectEditForm()}
         {topicEditForm()}
