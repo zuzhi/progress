@@ -56,6 +56,7 @@ function App() {
   // Fetch Data
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log(session)
       setSession(session)
     })
 
@@ -65,22 +66,26 @@ function App() {
       setSession(session)
     })
 
-    const fetchData = async () => {
-      const projects = await projectService.getAllWithReference()
-      if (projects) {
-        // Transform the topics structure for each project
-        const transformedProjects = projects.map(project => ({
-          ...project,
-          topics: nestTopics(project.topics)
-        }));
-        console.log(transformedProjects)
-        setProjects(transformedProjects);
-      }
-    }
-    fetchData()
-
     return () => subscription.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    if (session) {
+      const fetchData = async () => {
+        const projects = await projectService.getAllWithReference()
+        if (projects) {
+          // Transform the topics structure for each project
+          const transformedProjects = projects.map(project => ({
+            ...project,
+            topics: nestTopics(project.topics)
+          }))
+          console.log(transformedProjects)
+          setProjects(transformedProjects)
+        }
+      }
+      fetchData()
+    }
+  }, [session])
 
   const addProject = async (projectObject) => {
     projectFormRef.current.toggleVisibility()
@@ -262,29 +267,42 @@ function App() {
   }
 
   if (!session) {
-    return (<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />)
-  } else {
     return (
-      <>
-        <h2>Progress</h2>
-        <p>
-          In case you need to record the <strong>progress</strong> while getting things done.
-        </p>
-        {projectForm()}
-        {projectEditForm()}
-        {topicEditForm()}
-        <Projects projects={projects} onProjectDelete={handleProjectDelete} onProjectEdit={handleProjectEdit} onTopicDelete={handleTopicDelete} onTopicEdit={handleTopicEdit} onTopicAdd={handleTopicAdd} onTopicStatusChange={handleTopicStatusChange} />
-        <button
-          onClick={async () => {
-            const { error } = await supabase.auth.signOut()
-            if (error) console.log('Error logging out:', error.message)
-          }}
-        >
-          Logout
-        </button>
-      </>
+      <Auth
+        supabaseClient={supabase}
+        appearance={{ theme: ThemeSupa }}
+        providers={[]}
+      />
     )
   }
+
+  return (
+    <>
+      <h2>Progress</h2>
+      <p>
+        In case you need to record the <strong>progress</strong> while getting things done.
+      </p>
+      {projectForm()}
+      {projectEditForm()}
+      {topicEditForm()}
+      <Projects projects={projects} onProjectDelete={handleProjectDelete} onProjectEdit={handleProjectEdit} onTopicDelete={handleTopicDelete} onTopicEdit={handleTopicEdit} onTopicAdd={handleTopicAdd} onTopicStatusChange={handleTopicStatusChange} />
+      <span className="buttons">
+        {session.user.email.split('@')[0]} |&nbsp;
+      </span>
+      <button
+        onClick={async () => {
+          const { error } = await supabase.auth.signOut()
+          if (error) {
+            console.log('Error logging out:', error.message)
+          } else {
+            setProjects([])
+          }
+        }}
+      >
+        logout
+      </button>
+    </>
+  )
 }
 
 export default App
