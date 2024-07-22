@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import Projects from './components/Projects'
 import Togglable from './components/Togglable'
 import Visible from './components/Visible'
@@ -281,6 +282,7 @@ function App() {
         logout
       </button>
       <Analytics />
+      <SpeedInsights />
     </>
   )
 }
