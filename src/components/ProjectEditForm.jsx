@@ -1,6 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from "react"
 
-const ProjectEditForm = forwardRef(({ updateProject }, refs) => {
+const ProjectEditForm = forwardRef(({ onProjectUpdate }, refs) => {
   const [id, setId] = useState('')
   const [newProject, setNewProject] = useState('')
 
@@ -11,9 +11,9 @@ const ProjectEditForm = forwardRef(({ updateProject }, refs) => {
     }
   })
 
-  const onProjectUpdate = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    updateProject({
+    onProjectUpdate({
       id: id,
       name: newProject
     })
@@ -24,7 +24,7 @@ const ProjectEditForm = forwardRef(({ updateProject }, refs) => {
   return (
     <div>
       <h3>Edit project</h3>
-      <form onSubmit={onProjectUpdate}>
+      <form onSubmit={onSubmit}>
         <input
           hidden
           value={id}

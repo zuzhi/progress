@@ -3,7 +3,15 @@ import Topic from './Topic'
 import Togglable from './Togglable'
 import TopicForm from './TopicForm'
 
-const Project = ({ project, onProjectDelete, onProjectEdit, onTopicDelete, onTopicEdit, onTopicAdd, onTopicStatusChange }) => {
+const Project = ({
+  project,
+  onProjectDelete,
+  onProjectEdit,
+  onTopicDelete,
+  onTopicEdit,
+  onTopicAdd,
+  onTopicStatusChange
+}) => {
   const topicFormRef = useRef()
 
   const addTopic = (topicObject) => {
@@ -23,7 +31,7 @@ const Project = ({ project, onProjectDelete, onProjectEdit, onTopicDelete, onTop
   return (
     <li>
       <span className='project'>
-      {project.name} - {project.progress}%
+        {project.name} - {project.progress}%
       </span>
       <span className='buttons'>
         &nbsp;
@@ -35,7 +43,14 @@ const Project = ({ project, onProjectDelete, onProjectEdit, onTopicDelete, onTop
         project.topics && (
           <ul>
             {project.topics.map(topic => (
-              <Topic key={topic.id} topic={topic} onTopicDelete={onTopicDelete} onTopicEdit={onTopicEdit} onTopicAdd={onTopicAdd} onTopicStatusChange={onTopicStatusChange} />
+              <Topic
+                key={topic.id}
+                topic={topic}
+                onTopicDelete={onTopicDelete}
+                onTopicEdit={onTopicEdit}
+                onTopicAdd={onTopicAdd}
+                onTopicStatusChange={onTopicStatusChange}
+              />
             ))}
           </ul>
         )

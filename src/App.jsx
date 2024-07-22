@@ -56,7 +56,6 @@ function App() {
   // Fetch Data
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log(session)
       setSession(session)
     })
 
@@ -79,7 +78,6 @@ function App() {
             ...project,
             topics: nestTopics(project.topics)
           }))
-          console.log(transformedProjects)
           setProjects(transformedProjects)
         }
       }
@@ -87,7 +85,13 @@ function App() {
     }
   }, [session])
 
-  const addProject = async (projectObject) => {
+  const projectForm = () => (
+    <Togglable buttonLabel='new project' ref={projectFormRef}>
+      <ProjectForm onProjectCreate={handleProjectCreate} />
+    </Togglable>
+  )
+
+  const handleProjectCreate = async (projectObject) => {
     projectFormRef.current.toggleVisibility()
     const data = await projectService
           .create({ ...projectObject, userId: session?.user?.id })
@@ -95,7 +99,13 @@ function App() {
     setProjects(newProjects)
   }
 
-  const updateProject = async (projectObject) => {
+  const projectEditForm = () => (
+    <Visible ref={projectEditFormVisibleRef}>
+      <ProjectEditForm onProjectUpdate={handleProjectUpdate} ref={projectEditFormRef} />
+    </Visible>
+  )
+
+  const handleProjectUpdate = async (projectObject) => {
     projectEditFormVisibleRef.current.setVisible(false)
     const data = await projectService
       .update(projectObject.id, projectObject.name)
@@ -103,50 +113,36 @@ function App() {
     setProjects(newProjects)
   }
 
-  const projectForm = () => (
-    <Togglable buttonLabel='new project' ref={projectFormRef}>
-      <ProjectForm createProject={addProject} />
-    </Togglable>
-  )
-
-  const projectEditForm = () => (
-    <Visible ref={projectEditFormVisibleRef}>
-      <ProjectEditForm updateProject={updateProject} ref={projectEditFormRef} />
-    </Visible>
-  )
-
-  const handleProjectDelete = (project) => {
+  const handleProjectDelete = async (project) => {
     if (window.confirm('Delete ' + project.name)) {
-      projectService.deleteProject(project)
+      await projectService.deleteProject(project)
       const newProjects = projects.filter(p => p.id !== project.id)
       setProjects(newProjects)
     }
   }
 
   const handleProjectEdit = async (projectObject) => {
-    console.log(projectObject)
     projectEditFormVisibleRef.current.setVisible(true)
     projectEditFormRef.current.setId(projectObject.id)
     projectEditFormRef.current.setNewProject(projectObject.name)
   }
 
-  const updateTopic = async (topicObject) => {
+  const topicEditForm = () => (
+    <Visible ref={topicEditFormVisibleRef}>
+      <TopicEditForm onTopicUpdate={handleTopicUpdate} ref={topicEditFormRef} />
+    </Visible>
+  )
+
+  const handleTopicUpdate = async (topicObject) => {
     topicEditFormVisibleRef.current.setVisible(false)
     const topic = await topicService
       .update(topicObject.id, topicObject.name)
-    console.log(topic)
     const newProjects = projects.map(project => ({
       ...project,
       topics: updateTopicInNestedTopics(project.topics, topic)
     }))
     setProjects(newProjects)
   }
-
-  const topicEditForm = () => (
-    <Visible ref={topicEditFormVisibleRef}>
-      <TopicEditForm updateTopic={updateTopic} ref={topicEditFormRef} />
-    </Visible>
-  )
 
   const removeTopicInNestedTopics = (topics, topicToDelete) => {
     return topics
@@ -177,50 +173,53 @@ function App() {
         ...project,
         topics: removeTopicInNestedTopics(project.topics, topic)
       }))
-      setProjects(newProjects)
+      const updatedProjects = await updateProgress(newProjects, topic.project_id)
+      setProjects(updatedProjects)
     }
   }
 
   const handleTopicStatusChange = async (topic, topicStatus) => {
+    // Update topic
     const topicToUpdate = {
       ...topic,
       status: topicStatus
     }
     const topicUpdated = await topicService
       .updateStatus(topicToUpdate.id, topicToUpdate.status)
-    console.log(topicUpdated)
-    const projectUpdated = await updateProgress(topicUpdated.project_id)
-    console.log(projectUpdated)
+    // Update project(s) with topic
     const newProjects = projects.map(project => ({
       ...project,
-      progress: project.id === projectUpdated.id ? projectUpdated.progress : project.progress,
       topics: updateTopicInNestedTopics(project.topics, topicUpdated)
     }))
-    setProjects(newProjects)
+    // Update project progress
+    const updatedProjects = await updateProgress(newProjects, topicUpdated.project_id)
+    setProjects(updatedProjects)
   }
 
-  const updateProgress = async (projectId) => {
+  const updateProgress = async (projects, projectId) => {
     const topics = await topicService.getAllByProject(projectId)
     const project = await projectService.getOne(projectId)
     const finished = topics.filter(topic => topic.status === 'done' || topic.status === 'skip')
-    console.log(finished.length)
-    console.log(topics.length)
+    const newProgress = topics.length === 0 ? 0 : Math.floor(finished.length / topics.length * 100)
+    await projectService.updateProgress(projectId, newProgress)
     const newProject = {
       ...project,
-      progress: Math.floor(finished.length / topics.length * 100)
+      progress: newProgress
     }
-    await projectService.updateProgress(newProject.id, newProject.progress)
-    return newProject
+    const newProjects = projects.map(project => ({
+      ...project,
+      progress: project.id === newProject.id ? newProject.progress : project.progress
+    }))
+    return newProjects
   }
 
   const handleTopicEdit = async (topicObject) => {
-    console.log(topicObject)
     topicEditFormVisibleRef.current.setVisible(true)
     topicEditFormRef.current.setId(topicObject.id)
     topicEditFormRef.current.setNewTopic(topicObject.name)
   }
 
-  const createTopic = (projects, topicToCreate) => {
+  const createTopic = async (projects, topicToCreate) => {
     return projects.map(project => {
       if (project.id === topicToCreate.project_id) {
         // If parent_topic_id is null, it's a root topic
@@ -257,13 +256,12 @@ function App() {
     })
   }
 
-  const handleTopicAdd = async (topicObject) => {
-    console.log(topicObject)
+  const handleTopicCreate = async (topicObject) => {
     const topic = await topicService
       .create({ ...topicObject, userId: session?.user?.id })
-    console.log(topic)
-    const newProjects = createTopic(projects, topic)
-    setProjects(newProjects)
+    const newProjects = await createTopic(projects, topic)
+    const updatedProjects = await updateProgress(newProjects, topicObject.project_id)
+    setProjects(updatedProjects)
   }
 
   if (!session) {
@@ -285,7 +283,15 @@ function App() {
       {projectForm()}
       {projectEditForm()}
       {topicEditForm()}
-      <Projects projects={projects} onProjectDelete={handleProjectDelete} onProjectEdit={handleProjectEdit} onTopicDelete={handleTopicDelete} onTopicEdit={handleTopicEdit} onTopicAdd={handleTopicAdd} onTopicStatusChange={handleTopicStatusChange} />
+      <Projects
+        projects={projects}
+        onProjectDelete={handleProjectDelete}
+        onProjectEdit={handleProjectEdit}
+        onTopicDelete={handleTopicDelete}
+        onTopicEdit={handleTopicEdit}
+        onTopicAdd={handleTopicCreate}
+        onTopicStatusChange={handleTopicStatusChange}
+      />
       <span className="buttons">
         {session.user.email.split('@')[0]} |&nbsp;
       </span>

@@ -2,7 +2,13 @@ import { useRef } from 'react'
 import Togglable from './Togglable'
 import TopicForm from './TopicForm'
 
-const Topic = ({ topic, onTopicDelete, onTopicEdit, onTopicAdd, onTopicStatusChange }) => {
+const Topic = ({
+  topic,
+  onTopicDelete,
+  onTopicEdit,
+  onTopicAdd,
+  onTopicStatusChange
+}) => {
   const topicFormRef = useRef()
 
   const addTopic = (topicObject) => {
@@ -38,7 +44,14 @@ const Topic = ({ topic, onTopicDelete, onTopicEdit, onTopicAdd, onTopicStatusCha
       {topic.subTopics && topic.subTopics.length > 0 && (
         <ul>
           {topic.subTopics.map(subTopic => (
-            <Topic key={subTopic.id} topic={subTopic} onTopicDelete={onTopicDelete} onTopicEdit={onTopicEdit} onTopicAdd={onTopicAdd} onTopicStatusChange={onTopicStatusChange} />
+            <Topic
+              key={subTopic.id}
+              topic={subTopic}
+              onTopicDelete={onTopicDelete}
+              onTopicEdit={onTopicEdit}
+              onTopicAdd={onTopicAdd}
+              onTopicStatusChange={onTopicStatusChange}
+            />
           ))}
         </ul>
       )}

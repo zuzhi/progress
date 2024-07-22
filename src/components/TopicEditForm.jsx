@@ -1,6 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from "react"
 
-const TopicEditForm = forwardRef(({ updateTopic }, refs) => {
+const TopicEditForm = forwardRef(({ onTopicUpdate }, refs) => {
   const [id, setId] = useState('')
   const [newTopic, setNewTopic] = useState('')
 
@@ -11,9 +11,9 @@ const TopicEditForm = forwardRef(({ updateTopic }, refs) => {
     }
   })
 
-  const onTopicUpdate = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    updateTopic({
+    onTopicUpdate({
       id: id,
       name: newTopic
     })
@@ -24,7 +24,7 @@ const TopicEditForm = forwardRef(({ updateTopic }, refs) => {
   return (
     <div>
       <h3>Edit topic</h3>
-      <form onSubmit={onTopicUpdate}>
+      <form onSubmit={onSubmit}>
         <input
           hidden
           value={id}

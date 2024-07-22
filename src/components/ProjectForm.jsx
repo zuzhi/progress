@@ -1,11 +1,11 @@
 import { useState } from "react"
 
-const ProjectForm = ({ createProject }) => {
+const ProjectForm = ({ onProjectCreate }) => {
   const [newProject, setNewProject] = useState('')
 
-  const addProject = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    createProject({
+    onProjectCreate({
       name: newProject
     })
 
@@ -16,7 +16,7 @@ const ProjectForm = ({ createProject }) => {
   return (
     <div>
       <h3>Create a new project</h3>
-      <form onSubmit={addProject}>
+      <form onSubmit={onSubmit}>
         <input
           value={newProject}
           onChange={event => setNewProject(event.target.value)}
