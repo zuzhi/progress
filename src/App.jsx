@@ -53,6 +53,14 @@ function App() {
     return nestedTopics
   }
 
+  const transformProjects = (projects) => {
+    console.log(projects)
+    return projects.map(project => ({
+      ...project,
+      topics: nestTopics(project.topics)
+    }))
+  }
+
   // Fetch Data
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -219,48 +227,12 @@ function App() {
     topicEditFormRef.current.setNewTopic(topicObject.name)
   }
 
-  const createTopic = async (projects, topicToCreate) => {
-    return projects.map(project => {
-      if (project.id === topicToCreate.project_id) {
-        // If parent_topic_id is null, it's a root topic
-        if (topicToCreate.parent_topic_id === null) {
-          return {
-            ...project,
-            topics: [...project.topics, { ...topicToCreate, subTopics: [] }]
-          }
-        } else {
-          // If parent_topic_id is not null, it's a nested topic
-          const addNestedTopic = (topics, topicToCreate) => {
-            return topics.map(topic => {
-              if (topic.id === topicToCreate.parent_topic_id) {
-                return {
-                  ...topic,
-                  subTopics: [...topic.subTopics, { ...topicToCreate, subTopics: [] }]
-                }
-              } else {
-                return {
-                  ...topic,
-                  subTopics: addNestedTopic(topic.subTopics, topicToCreate)
-                }
-              }
-            })
-          }
-
-          return {
-            ...project,
-            topics: addNestedTopic(project.topics, topicToCreate)
-          }
-        }
-      }
-      return project
-    })
-  }
-
   const handleTopicCreate = async (topicObject) => {
     const topic = await topicService
       .create({ ...topicObject, userId: session?.user?.id })
-    const newProjects = await createTopic(projects, topic)
-    const updatedProjects = await updateProgress(newProjects, topicObject.project_id)
+    const projects = await projectService.getAllWithReference()
+    const transformedProjects = transformProjects(projects)
+    const updatedProjects = await updateProgress(transformedProjects, topic.project_id)
     setProjects(updatedProjects)
   }
 
