@@ -10,15 +10,11 @@ import projectService from './services/projects'
 import TopicEditForm from './components/TopicEditForm'
 import topicService from './services/topics'
 
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from './lib/initSupabase'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 
 import './App.css'
-
-const supabaseUrl = 'https://melsspoompxwejtdxmzc.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lbHNzcG9vbXB4d2VqdGR4bXpjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAxNzAzODUsImV4cCI6MjAzNTc0NjM4NX0.kPDn_-Jmism7oKEGTDaq9QhErl_6h3xsWoR4Fnf-rDg'
-const supabase = createClient(supabaseUrl, supabaseKey)
 
 function App() {
   const [projects, setProjects] = useState([])
@@ -56,7 +52,6 @@ function App() {
   }
 
   const transformProjects = (projects) => {
-    console.log(projects)
     return projects.map(project => ({
       ...project,
       topics: nestTopics(project.topics)
