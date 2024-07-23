@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 import Topic from './Topic'
 import Togglable from './Togglable'
 import TopicForm from './TopicForm'
@@ -12,6 +12,12 @@ const Project = ({
   onTopicAdd,
   onTopicStatusChange
 }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   const topicFormRef = useRef()
 
   const addTopic = (topicObject) => {
@@ -38,23 +44,31 @@ const Project = ({
         <button onClick={() => onProjectEdit(project)}>edit</button>
         <button onClick={() => onProjectDelete(project)}>delete</button>
       </span>
-      {topicForm()}
-      {
-        project.topics && (
-          <ul>
-            {project.topics.map(topic => (
-              <Topic
-                key={topic.id}
-                topic={topic}
-                onTopicDelete={onTopicDelete}
-                onTopicEdit={onTopicEdit}
-                onTopicAdd={onTopicAdd}
-                onTopicStatusChange={onTopicStatusChange}
-              />
-            ))}
-          </ul>
-        )
-      }
+      <span className='buttons' onClick={toggleCollapse} style={{ cursor: 'pointer' }}>
+        &nbsp;
+        {isCollapsed ? '[' + project.topics?.length + ' more]' : '[-]'}
+      </span>
+      {!isCollapsed && (
+        <div>
+          {topicForm()}
+          {
+            project.topics && (
+              <ul>
+                {project.topics.map(topic => (
+                  <Topic
+                    key={topic.id}
+                    topic={topic}
+                    onTopicDelete={onTopicDelete}
+                    onTopicEdit={onTopicEdit}
+                    onTopicAdd={onTopicAdd}
+                    onTopicStatusChange={onTopicStatusChange}
+                  />
+                ))}
+              </ul>
+            )
+          }
+        </div>
+      )}
     </li>
   )
 }
