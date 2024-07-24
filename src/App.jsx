@@ -17,14 +17,16 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 import './App.css'
 
 function App() {
+  const [session, setSession] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [projects, setProjects] = useState([])
+
   const projectFormRef = useRef()
   const projectEditFormVisibleRef = useRef()
   const projectEditFormRef = useRef()
   const topicEditFormVisibleRef = useRef()
   const topicEditFormRef = useRef()
 
-  const [session, setSession] = useState(null)
 
   const nestTopics = (topics) => {
     const topicMap = {}
@@ -60,9 +62,12 @@ function App() {
 
   // Fetch Data
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
       setSession(session)
-    })
+      setLoading(false)
+    }
+    checkSession()
 
     const {
       data: { subscription },
@@ -231,6 +236,10 @@ function App() {
     const transformedProjects = transformProjects(projects)
     const updatedProjects = await updateProgress(transformedProjects, topic.project_id)
     setProjects(updatedProjects)
+  }
+
+  if (loading) {
+    return <p>Loading...</p>
   }
 
   if (!session) {
