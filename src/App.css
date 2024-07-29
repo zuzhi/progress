@@ -28,6 +28,10 @@ span.done {
 
 span.skip {
   color: #828282;
+}
+
+span.skim {
+  color: #828282;
   text-decoration: line-through;
 }
 

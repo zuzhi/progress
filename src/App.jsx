@@ -209,7 +209,7 @@ function App() {
   const updateProgress = async (projects, projectId) => {
     const topics = await topicService.getAllByProject(projectId)
     const project = await projectService.getOne(projectId)
-    const finished = topics.filter(topic => topic.status === 'done' || topic.status === 'skip')
+    const finished = topics.filter(topic => topic.status === 'done' || topic.status === 'skip' || topic.status === 'skim')
     const newProgress = topics.length === 0 ? 0 : Math.floor(finished.length / topics.length * 100)
     await projectService.updateProgress(projectId, newProgress)
     const newProject = {

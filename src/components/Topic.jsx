@@ -39,6 +39,7 @@ const Topic = ({
         <button onClick={() => onTopicStatusChange(topic, 'in progress')}>in progress</button>
         <button onClick={() => onTopicStatusChange(topic, 'done')}>done</button>
         <button onClick={() => onTopicStatusChange(topic, 'skip')}>skip</button>
+        <button onClick={() => onTopicStatusChange(topic, 'skim')}>skim</button>
       </span>
       {topicForm()}
       {topic.subTopics && topic.subTopics.length > 0 && (
