@@ -23,7 +23,7 @@ const TopicEditForm = forwardRef(({ onTopicUpdate }, refs) => {
 
   return (
     <div>
-      <h3>Edit topic</h3>
+      <p><b>Edit topic</b></p>
       <form onSubmit={onSubmit}>
         <input
           hidden

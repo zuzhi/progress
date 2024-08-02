@@ -12,10 +12,8 @@ const TopicForm = ({ createTopic }) => {
     setNewTopic('')
   }
 
-
   return (
     <div>
-      <h3>Create a new sub-topic</h3>
       <form onSubmit={addTopic}>
         <input
           value={newTopic}

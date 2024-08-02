@@ -1,4 +1,5 @@
-.buttons {
+.buttons,
+.footer {
   color: #828282;
   font-size: 0.8em;
 }
@@ -41,4 +42,19 @@ span.in-progress {
 
 span.project {
   font-weight: bold;
+}
+
+.product-name {
+  font-family: monospace;
+}
+
+.auth-form {
+  width: 400px;
+}
+
+/* Styles for mobile screens */
+@media (max-width: 600px) {
+  .auth-form {
+    width: 100%;
+  }
 }

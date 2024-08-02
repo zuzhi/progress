@@ -15,7 +15,6 @@ const ProjectForm = ({ onProjectCreate }) => {
 
   return (
     <div>
-      <h3>Create a new project</h3>
       <form onSubmit={onSubmit}>
         <input
           value={newProject}

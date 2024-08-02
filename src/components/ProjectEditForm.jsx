@@ -23,7 +23,7 @@ const ProjectEditForm = forwardRef(({ onProjectUpdate }, refs) => {
 
   return (
     <div>
-      <h3>Edit project</h3>
+      <p><b>Edit project</b></p>
       <form onSubmit={onSubmit}>
         <input
           hidden
