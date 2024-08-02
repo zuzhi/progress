@@ -7,6 +7,7 @@ const Project = ({
   project,
   onProjectDelete,
   onProjectEdit,
+  onProjectArchive,
   onTopicDelete,
   onTopicEdit,
   onTopicAdd,
@@ -53,6 +54,7 @@ const Project = ({
         &nbsp;
         <button onClick={() => onProjectEdit(project)}>edit</button>
         <button onClick={() => onProjectDelete(project)}>delete</button>
+        <button onClick={() => onProjectArchive(project)}>archive</button>
       </span>
       <span className='buttons' onClick={toggleCollapse} style={{ cursor: 'pointer' }}>
         &nbsp;

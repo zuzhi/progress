@@ -45,6 +45,7 @@ const getAllWithReference = async () => {
         status
       )
     `)
+    .eq('status', 'normal')
     .order('id', { ascending: true })
     .order('id', { ascending: true, referencedTable: 'topics' })
 
@@ -101,4 +102,25 @@ const deleteProject = async (project) => {
     .eq('id', project.id)
 }
 
-export default { getAll, getOne, getAllWithReference, create, update, updateProgress, deleteProject }
+const archiveProject = async (project) => {
+  const { data, error } = await supabase
+    .from('projects')
+    .update({ status: 'archived' })
+    .eq('id', project.id)
+    .select()
+  if (error) {
+    console.log(error)
+  }
+  return data[0]
+}
+
+export default {
+  getAll,
+  getOne,
+  getAllWithReference,
+  create,
+  update,
+  updateProgress,
+  deleteProject,
+  archiveProject
+}

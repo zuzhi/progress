@@ -137,6 +137,14 @@ function App() {
     projectEditFormRef.current.setNewProject(projectObject.name)
   }
 
+  const handleProjectArchive = async (project) => {
+    if (window.confirm('Archive ' + project.name)) {
+      await projectService.archiveProject(project)
+      const newProjects = projects.filter(p => p.id !== project.id)
+      setProjects(newProjects)
+    }
+  }
+
   const topicEditForm = () => (
     <Visible ref={topicEditFormVisibleRef}>
       <TopicEditForm onTopicUpdate={handleTopicUpdate} ref={topicEditFormRef} />
@@ -265,6 +273,7 @@ function App() {
         projects={projects}
         onProjectDelete={handleProjectDelete}
         onProjectEdit={handleProjectEdit}
+        onProjectArchive={handleProjectArchive}
         onTopicDelete={handleTopicDelete}
         onTopicEdit={handleTopicEdit}
         onTopicAdd={handleTopicCreate}

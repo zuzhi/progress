@@ -4,6 +4,7 @@ const Projects = ({
   projects,
   onProjectDelete,
   onProjectEdit,
+  onProjectArchive,
   onTopicDelete,
   onTopicEdit,
   onTopicAdd,
@@ -18,6 +19,7 @@ const Projects = ({
             project={p}
             onProjectDelete={onProjectDelete}
             onProjectEdit={onProjectEdit}
+            onProjectArchive={onProjectArchive}
             onTopicDelete={onTopicDelete}
             onTopicEdit={onTopicEdit}
             onTopicAdd={onTopicAdd}
