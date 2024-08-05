@@ -1,7 +1,14 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
-const TopicForm = ({ createTopic }) => {
+const TopicForm = ({ createTopic, isVisible }) => {
   const [newTopic, setNewTopic] = useState('')
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (isVisible) {
+      inputRef.current.focus()
+    }
+  }, [isVisible])
 
   const addTopic = (event) => {
     event.preventDefault()
@@ -16,6 +23,7 @@ const TopicForm = ({ createTopic }) => {
     <div>
       <form onSubmit={addTopic}>
         <input
+          ref={inputRef}
           value={newTopic}
           onChange={event => setNewTopic(event.target.value)}
         />

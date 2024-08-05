@@ -13,6 +13,12 @@ const Project = ({
   onTopicAdd,
   onTopicStatusChange
 }) => {
+  const [topicFormVisible, setTopicFormVisible] = useState(false)
+
+  const handleTopicFormVisibleChange = (visible) => {
+    setTopicFormVisible(visible)
+  }
+
   // Unique key for each project's collapsed state in localStorage
   const storageKey = `project_${project.id}_collapsed`
 
@@ -40,8 +46,8 @@ const Project = ({
   }
 
   const topicForm = () => (
-    <Togglable buttonLabel='new sub-topic' ref={topicFormRef}>
-      <TopicForm createTopic={addTopic} />
+    <Togglable buttonLabel='new sub-topic' ref={topicFormRef} onVisibleChange={handleTopicFormVisibleChange}>
+      <TopicForm createTopic={addTopic} isVisible={topicFormVisible} />
     </Togglable>
   )
 

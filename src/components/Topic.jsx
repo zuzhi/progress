@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 import Togglable from './Togglable'
 import TopicForm from './TopicForm'
 
@@ -11,6 +11,12 @@ const Topic = ({
 }) => {
   const topicFormRef = useRef()
 
+  const [topicFormVisible, setTopicFormVisible] = useState(false)
+
+  const handleTopicFormVisibleChange = (visible) => {
+    setTopicFormVisible(visible)
+  }
+
   const addTopic = (topicObject) => {
     topicFormRef.current.toggleVisibility()
     onTopicAdd({
@@ -21,8 +27,8 @@ const Topic = ({
   }
 
   const topicForm = () => (
-    <Togglable buttonLabel='new sub-topic' ref={topicFormRef}>
-      <TopicForm createTopic={addTopic} />
+    <Togglable buttonLabel='new sub-topic' ref={topicFormRef} onVisibleChange={handleTopicFormVisibleChange}>
+      <TopicForm createTopic={addTopic} isVisible={topicFormVisible} />
     </Togglable>
   )
 

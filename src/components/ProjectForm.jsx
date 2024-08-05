@@ -1,7 +1,14 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
-const ProjectForm = ({ onProjectCreate }) => {
+const ProjectForm = ({ onProjectCreate, isVisible }) => {
   const [newProject, setNewProject] = useState('')
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (isVisible) {
+      inputRef.current.focus()
+    }
+  }, [isVisible])
 
   const onSubmit = (event) => {
     event.preventDefault()
@@ -12,11 +19,11 @@ const ProjectForm = ({ onProjectCreate }) => {
     setNewProject('')
   }
 
-
   return (
     <div>
       <form onSubmit={onSubmit}>
         <input
+          ref={inputRef}
           value={newProject}
           onChange={event => setNewProject(event.target.value)}
         />

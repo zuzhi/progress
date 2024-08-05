@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle } from 'react'
+import { useState, forwardRef, useImperativeHandle, useEffect } from 'react'
 
 const Visible = forwardRef((props, refs) => {
   const [visible, setVisible] = useState(false)
@@ -16,6 +16,12 @@ const Visible = forwardRef((props, refs) => {
       setVisible
     }
   })
+
+  useEffect(() => {
+    if (props.onVisibleChange) {
+      props.onVisibleChange(visible)
+    }
+  }, [visible])
 
   return (
     <div>

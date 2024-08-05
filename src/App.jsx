@@ -20,6 +20,9 @@ function App() {
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
   const [projects, setProjects] = useState([])
+  const [projectFormVisible, setProjectFormVisible] = useState(false)
+  const [projectEditFormVisible, setProjectEditFormVisible] = useState(false)
+  const [topicEditFormVisible, setTopicEditFormVisible] = useState(false)
 
   const projectFormRef = useRef()
   const projectEditFormVisibleRef = useRef()
@@ -95,9 +98,21 @@ function App() {
     }
   }, [session])
 
+  const handleProjectFormVisibleChange = (visible) => {
+    setProjectFormVisible(visible)
+  }
+
+  const handleProjectEditFormVisibleChange = (visible) => {
+    setProjectEditFormVisible(visible)
+  }
+
+  const handleTopicEditFormVisibleChange = (visible) => {
+    setTopicEditFormVisible(visible)
+  }
+
   const projectForm = () => (
-    <Togglable buttonLabel='new project' ref={projectFormRef}>
-      <ProjectForm onProjectCreate={handleProjectCreate} />
+    <Togglable buttonLabel='new project' ref={projectFormRef} onVisibleChange={handleProjectFormVisibleChange}>
+      <ProjectForm onProjectCreate={handleProjectCreate} isVisible={projectFormVisible} />
     </Togglable>
   )
 
@@ -110,8 +125,8 @@ function App() {
   }
 
   const projectEditForm = () => (
-    <Visible ref={projectEditFormVisibleRef}>
-      <ProjectEditForm onProjectUpdate={handleProjectUpdate} ref={projectEditFormRef} />
+    <Visible ref={projectEditFormVisibleRef} onVisibleChange={handleProjectEditFormVisibleChange}>
+      <ProjectEditForm onProjectUpdate={handleProjectUpdate} ref={projectEditFormRef} isVisible={projectEditFormVisible} />
     </Visible>
   )
 
@@ -146,8 +161,8 @@ function App() {
   }
 
   const topicEditForm = () => (
-    <Visible ref={topicEditFormVisibleRef}>
-      <TopicEditForm onTopicUpdate={handleTopicUpdate} ref={topicEditFormRef} />
+    <Visible ref={topicEditFormVisibleRef} onVisibleChange={handleTopicEditFormVisibleChange}>
+      <TopicEditForm onTopicUpdate={handleTopicUpdate} ref={topicEditFormRef} isVisible={topicEditFormVisible} />
     </Visible>
   )
 
