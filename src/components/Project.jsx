@@ -64,7 +64,7 @@ const Project = ({
       </span>
       <span className='buttons' onClick={toggleCollapse} style={{ cursor: 'pointer' }}>
         &nbsp;
-        {isCollapsed ? '[' + project.topics?.length + ' more]' : '[-]'}
+        {isCollapsed ? '[' + (project.topics?.length ?? 0) + ' more]' : '[-]'}
       </span>
       {!isCollapsed && (
         <div>
