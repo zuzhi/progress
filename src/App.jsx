@@ -287,7 +287,7 @@ function App() {
             <li>add some topics</li>
             <li>update topic status</li>
           </ul>
-          <p>then the project progress will automatically be calculated, yeah, that's the whole point.</p>
+          <p>then the project progress will automatically be calculated, yeah, that&apos;s the whole point.</p>
           <p>
             for example:
           </p>
