@@ -28,7 +28,7 @@ const Topic = ({
 
   const topicForm = () => (
     <Togglable buttonLabel='new sub-topic' ref={topicFormRef} onVisibleChange={handleTopicFormVisibleChange}>
-      <TopicForm createTopic={addTopic} isVisible={topicFormVisible} />
+      <TopicForm onTopicCreate={addTopic} isVisible={topicFormVisible} />
     </Togglable>
   )
 

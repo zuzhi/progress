@@ -47,7 +47,7 @@ const Project = ({
 
   const topicForm = () => (
     <Togglable buttonLabel='new sub-topic' ref={topicFormRef} onVisibleChange={handleTopicFormVisibleChange}>
-      <TopicForm createTopic={addTopic} isVisible={topicFormVisible} />
+      <TopicForm onTopicCreate={addTopic} isVisible={topicFormVisible} />
     </Togglable>
   )
 
@@ -67,7 +67,7 @@ const Project = ({
         {isCollapsed ? '[' + (project.topics?.length ?? 0) + ' more]' : '[-]'}
       </span>
       {!isCollapsed && (
-        <div>
+        <div className='collapseContent'>
           {topicForm()}
           {
             project.topics && (

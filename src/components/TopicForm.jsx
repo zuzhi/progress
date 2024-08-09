@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 
-const TopicForm = ({ createTopic, isVisible }) => {
+const TopicForm = ({ onTopicCreate, isVisible }) => {
   const [newTopic, setNewTopic] = useState('')
   const inputRef = useRef(null)
 
@@ -12,7 +12,7 @@ const TopicForm = ({ createTopic, isVisible }) => {
 
   const addTopic = (event) => {
     event.preventDefault()
-    createTopic({
+    onTopicCreate({
       name: newTopic
     })
 

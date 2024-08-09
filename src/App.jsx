@@ -3,7 +3,6 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import Projects from './components/Projects'
 import Togglable from './components/Togglable'
-import Visible from './components/Visible'
 import ProjectForm from './components/ProjectForm'
 import ProjectEditForm from './components/ProjectEditForm'
 import projectService from './services/projects'
@@ -125,9 +124,9 @@ function App() {
   }
 
   const projectEditForm = () => (
-    <Visible ref={projectEditFormVisibleRef} onVisibleChange={handleProjectEditFormVisibleChange}>
+    <Togglable ref={projectEditFormVisibleRef} onVisibleChange={handleProjectEditFormVisibleChange}>
       <ProjectEditForm onProjectUpdate={handleProjectUpdate} ref={projectEditFormRef} isVisible={projectEditFormVisible} />
-    </Visible>
+    </Togglable>
   )
 
   const handleProjectUpdate = async (projectObject) => {
@@ -161,9 +160,9 @@ function App() {
   }
 
   const topicEditForm = () => (
-    <Visible ref={topicEditFormVisibleRef} onVisibleChange={handleTopicEditFormVisibleChange}>
+    <Togglable ref={topicEditFormVisibleRef} onVisibleChange={handleTopicEditFormVisibleChange}>
       <TopicEditForm onTopicUpdate={handleTopicUpdate} ref={topicEditFormRef} isVisible={topicEditFormVisible} />
-    </Visible>
+    </Togglable>
   )
 
   const handleTopicUpdate = async (topicObject) => {

@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react'
-import ProjectForm from './ProjectForm'
+import TopicForm from './TopicForm'
 import userEvent from '@testing-library/user-event'
 import { expect } from 'vitest'
 
-test('<ProjectForm /> updates parent state and calls onSubmit', async () => {
-  const onProjectCreate = vi.fn()
+test('<TopicForm /> updates parent state and calls onSubmit', async () => {
+  const onTopicCreate = vi.fn()
   const user = userEvent.setup()
 
-  render(<ProjectForm onProjectCreate={onProjectCreate} isVisible={true} />)
+  render(<TopicForm onTopicCreate={onTopicCreate} isVisible={true} />)
 
   const input = screen.getByRole('textbox')
   expect(input).toHaveFocus()
@@ -17,6 +17,6 @@ test('<ProjectForm /> updates parent state and calls onSubmit', async () => {
   await user.type(input, 'testing a form...')
   await user.click(sendButton)
 
-  expect(onProjectCreate.mock.calls).toHaveLength(1)
-  expect(onProjectCreate.mock.calls[0][0].name).toBe('testing a form...')
+  expect(onTopicCreate.mock.calls).toHaveLength(1)
+  expect(onTopicCreate.mock.calls[0][0].name).toBe('testing a form...')
 })
