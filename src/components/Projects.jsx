@@ -1,29 +1,32 @@
+import { useDispatch, useSelector } from 'react-redux'
 import Project from './Project'
+import { archiveProject, deleteProject } from '../reducers/projectReducer'
 
 const Projects = ({
-  projects,
-  onProjectDelete,
   onProjectEdit,
-  onProjectArchive,
-  onTopicDelete,
   onTopicEdit,
-  onTopicAdd,
-  onTopicStatusChange
+  onTopicAdd
 }) => {
+
+  const dispatch = useDispatch()
+  const projects = useSelector(state => state.projects)
+
   return (
     <ul>
       {
-        projects.map(p =>
+        projects.map(project =>
           <Project
-            key={p.id}
-            project={p}
-            onProjectDelete={onProjectDelete}
-            onProjectEdit={onProjectEdit}
-            onProjectArchive={onProjectArchive}
-            onTopicDelete={onTopicDelete}
+            key={project.id}
+            project={project}
+            handleProjectDelete={() =>
+              dispatch(deleteProject(project))
+            }
+            handleProjectEdit={onProjectEdit}
+            handleProjectArchive={() =>
+              dispatch(archiveProject(project))
+            }
             onTopicEdit={onTopicEdit}
             onTopicAdd={onTopicAdd}
-            onTopicStatusChange={onTopicStatusChange}
           />
         )
       }

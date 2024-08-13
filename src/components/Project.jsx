@@ -2,17 +2,18 @@ import { useState, useEffect, useRef } from 'react'
 import Topic from './Topic'
 import Togglable from './Togglable'
 import TopicForm from './TopicForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { archiveProject, deleteProject } from '../reducers/projectReducer'
+import { createTopic } from '../reducers/topicReducer'
 
 const Project = ({
   project,
-  onProjectDelete,
-  onProjectEdit,
-  onProjectArchive,
-  onTopicDelete,
+  handleProjectEdit,
   onTopicEdit,
-  onTopicAdd,
-  onTopicStatusChange
+  onTopicAdd
 }) => {
+  const dispatch = useDispatch()
+  const session = useSelector(state => state.session)
   const [topicFormVisible, setTopicFormVisible] = useState(false)
 
   const handleTopicFormVisibleChange = (visible) => {
@@ -37,17 +38,18 @@ const Project = ({
 
   const topicFormRef = useRef()
 
-  const addTopic = (topicObject) => {
+  const handleTopicCreate = (topicObject) => {
     topicFormRef.current.toggleVisibility()
-    onTopicAdd({
+    const topicToSave = {
       ...topicObject,
       project_id: project.id
-    })
+    }
+    dispatch(createTopic(topicToSave, session))
   }
 
   const topicForm = () => (
     <Togglable buttonLabel='new sub-topic' ref={topicFormRef} onVisibleChange={handleTopicFormVisibleChange}>
-      <TopicForm onTopicCreate={addTopic} isVisible={topicFormVisible} />
+      <TopicForm onTopicCreate={handleTopicCreate} isVisible={topicFormVisible} />
     </Togglable>
   )
 
@@ -58,9 +60,9 @@ const Project = ({
       </span>
       <span className='buttons'>
         &nbsp;
-        <button onClick={() => onProjectEdit(project)}>edit</button>
-        <button onClick={() => onProjectDelete(project)}>delete</button>
-        <button onClick={() => onProjectArchive(project)}>archive</button>
+        <button onClick={() => handleProjectEdit(project)}>edit</button>
+        <button onClick={() => dispatch(deleteProject(project))}>delete</button>
+        <button onClick={() => dispatch(archiveProject(project))}>archive</button>
       </span>
       <span className='buttons' onClick={toggleCollapse} style={{ cursor: 'pointer' }}>
         &nbsp;
@@ -76,10 +78,7 @@ const Project = ({
                   <Topic
                     key={topic.id}
                     topic={topic}
-                    onTopicDelete={onTopicDelete}
                     onTopicEdit={onTopicEdit}
-                    onTopicAdd={onTopicAdd}
-                    onTopicStatusChange={onTopicStatusChange}
                   />
                 ))}
               </ul>
