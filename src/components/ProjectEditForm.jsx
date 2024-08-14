@@ -65,7 +65,7 @@ const ProjectEditForm = forwardRef(({ onProjectUpdate, isVisible }, refs) => {
           value={newProject}
           onChange={event => setNewProject(event.target.value)}
         />
-        <button type="submit">&nbsp;save</button>
+        <button className="button" type="submit">save</button>
       </form>
     </div>
   )

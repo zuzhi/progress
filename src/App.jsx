@@ -170,9 +170,10 @@ function App() {
         onTopicEdit={handleTopicEdit}
       />
       <span className="footer">
-        {session.user.email.split('@')[0]} |&nbsp;
+        {session.user.email.split('@')[0]} |
       </span>
       <button
+        className='button'
         onClick={async () => {
           const { error } = await supabase.auth.signOut()
           if (error) {

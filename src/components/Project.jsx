@@ -59,15 +59,13 @@ const Project = ({
         {project.name} - {project.progress}%
       </span>
       <span className='buttons'>
-        &nbsp;
-        <button onClick={() => handleProjectEdit(project)}>edit</button>
-        <button onClick={() => dispatch(deleteProject(project))}>delete</button>
-        <button onClick={() => dispatch(archiveProject(project))}>archive</button>
+        <button className='button' onClick={() => handleProjectEdit(project)}>edit</button>
+        <button className='button' onClick={() => dispatch(deleteProject(project))}>delete</button>
+        <button className='button' onClick={() => dispatch(archiveProject(project))}>archive</button>
       </span>
-      <span className='buttons' onClick={toggleCollapse} style={{ cursor: 'pointer' }}>
-        &nbsp;
+      <button className='button' onClick={toggleCollapse}>
         {isCollapsed ? '[' + (project.topics?.length ?? 0) + ' more]' : '[-]'}
-      </span>
+      </button>
       {!isCollapsed && (
         <div className='collapseContent'>
           {topicForm()}

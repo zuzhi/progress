@@ -4,19 +4,19 @@
   font-size: 0.8em;
 }
 
+.button {
+  padding: 0px 0px 0px 5px;
+}
+
 button {
   background: none;
   border: none;
   color: #828282;
-  padding: 0px 5px 0px 0px;
+  padding: 0px;
   font: inherit;
   font-size: 0.8em;
   cursor: pointer;
   text-decoration: none;
-}
-
-.buttons > :last-child {
-  padding: 0px;
 }
 
 button:hover {

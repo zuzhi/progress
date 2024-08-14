@@ -41,14 +41,13 @@ const Topic = ({
       {topic.name}
       </span>
       <span className='buttons'>
-        &nbsp;
-        <button onClick={() => onTopicEdit(topic)}>edit</button>
-        <button onClick={() => dispatch(deleteTopic(topic))}>delete</button>
-        <button onClick={() => dispatch(updateTopicStatus(topic, 'pending'))}>pending</button>
-        <button onClick={() => dispatch(updateTopicStatus(topic, 'in progress'))}>in progress</button>
-        <button onClick={() => dispatch(updateTopicStatus(topic, 'done'))}>done</button>
-        <button onClick={() => dispatch(updateTopicStatus(topic, 'skip'))}>skip</button>
-        <button onClick={() => dispatch(updateTopicStatus(topic, 'skim'))}>skim</button>
+        <button className='button' onClick={() => onTopicEdit(topic)}>edit</button>
+        <button className='button' onClick={() => dispatch(deleteTopic(topic))}>delete</button>
+        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'pending'))}>pending</button>
+        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'in progress'))}>in progress</button>
+        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'done'))}>done</button>
+        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'skip'))}>skip</button>
+        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'skim'))}>skim</button>
       </span>
       {topicForm()}
       {topic.subTopics && topic.subTopics.length > 0 && (

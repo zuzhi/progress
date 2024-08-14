@@ -65,7 +65,7 @@ const TopicEditForm = forwardRef(({ onTopicUpdate, isVisible }, refs) => {
           value={newTopic}
           onChange={event => setNewTopic(event.target.value)}
         />
-        <button type="submit">&nbsp;save</button>
+        <button className="button" type="submit">save</button>
       </form>
     </div>
   )
