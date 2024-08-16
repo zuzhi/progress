@@ -23,7 +23,6 @@ function App() {
   const [projectFormVisible, setProjectFormVisible] = useState(false)
   const [projectEditFormVisible, setProjectEditFormVisible] = useState(false)
   const [topicEditFormVisible, setTopicEditFormVisible] = useState(false)
-  const [editorContent, setEditorContent] = useState('')
   const [combinedContent, setCombinedContent] = useState('')
   const [project, setProject] = useState(null)
 
@@ -34,7 +33,6 @@ function App() {
   const topicEditFormRef = useRef()
 
   const dispatch = useDispatch()
-  const projects = useSelector(state => state.projects)
   const session = useSelector(state => state.session)
 
   // Use a ref to access the quill instance from the child component
@@ -175,12 +173,6 @@ function App() {
     topics.forEach(topic => {
       // Create a <li> element for each topic
       const li = document.createElement('li')
-      li.setAttribute('data-id', topic.id)
-      li.setAttribute('data-project_id', topic.project_id)
-      if (topic.parent_topic_id) {
-        li.setAttribute('data-parent_topic_id', topic.parent_topic_id)
-      }
-      li.setAttribute('data-status', topic.status)
       li.innerHTML = `${topic.name}`
 
       // If the topic has subtopics, call the function recursively
@@ -211,18 +203,14 @@ function App() {
   }
 
   const parseTopic = (element) => {
-    // parse topic text, extract id, status and name, in form: [id]/[] [status]/[] name
+    // parse topic text and class(for hierarchy)
     return {
-      parentTopicId: extractAttribute(element, 'data-parent_topic_id'),
-      id: extractAttribute(element, 'data-id'),
-      status: extractAttribute(element, 'data-status'),
       class: extractAttribute(element, 'class'),
       name: element.innerText.trim()
     }
   }
 
   const parseTopics = (editorHTML) => {
-    // deal with id, parent_topic_id, status
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = editorHTML
 
@@ -230,7 +218,7 @@ function App() {
       parseTopic(li)
     )
 
-    console.log("Parsed Topics:", parsedTopics)
+    console.log("parsed topics:", parsedTopics)
     return parsedTopics
   }
 
@@ -269,9 +257,10 @@ function App() {
             onClick={async () => {
               const { error } = await supabase.auth.signOut()
               if (error) {
-                console.log('Error logging out:', error.message)
+                console.log('error logging out:', error.message)
               } else {
-                //dispatch(initializeProjects())
+                dispatch(setProjects([]))
+                setProject(null)
               }
             }}
           >
@@ -284,7 +273,7 @@ function App() {
             <p>project name: {project?.name}</p>
             <div className='form-group'>
               <label>topics: </label>
-              <Editor ref={quillRef} content={combinedContent} setContent={setEditorContent} />
+              <Editor ref={quillRef} content={combinedContent} />
             </div>
             <button type="submit">save</button>
           </form>
