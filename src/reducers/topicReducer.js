@@ -18,7 +18,7 @@ const removeTopicInNestedTopics = (topics, topicToDelete) => {
     .filter(topic => topic.id !== topicToDelete.id)
     .map(topic => ({
       ...topic,
-      subTopics: removeTopicInNestedTopics(topic.subTopics, topicToDelete)
+      topics: removeTopicInNestedTopics(topic.topics, topicToDelete)
     }))
 }
 
@@ -44,9 +44,9 @@ const updateTopicInNestedTopics = (topics, topicToUpdate) => {
     if (topic.id === topicToUpdate.id) {
       // Update the topic properties
       return { ...topic, ...topicToUpdate }
-    } else if (topic.subTopics) {
+    } else if (topic.topics) {
       // Recursively update subtopics
-      return { ...topic, subTopics: updateTopicInNestedTopics(topic.subTopics, topicToUpdate) }
+      return { ...topic, topics: updateTopicInNestedTopics(topic.topics, topicToUpdate) }
     }
     return topic
   })
@@ -55,7 +55,7 @@ const updateTopicInNestedTopics = (topics, topicToUpdate) => {
 export const deleteTopic = (topic) => {
   return async (dispatch, getState) => {
     const projects = getState().projects
-    if (window.confirm('Delete ' + topic.name)) {
+    if (window.confirm(`delete ${topic.name}?`)) {
       await topicService.deleteTopic(topic)
       const newProjects = projects.map(project => ({
         ...project,
@@ -102,6 +102,24 @@ export const createTopic = (topic, session) => {
     const transformedProjects = transformProjects(projects)
     const updatedProjects = await updateProgress(transformedProjects, savedTopic.project_id)
     dispatch(setProjects(updatedProjects))
+  }
+}
+
+export const getAllTopicsByProjectId = (projectId) => {
+  return async dispatch => {
+    const topics = await topicService.getAllByProject(projectId)
+    dispatch(setTopics(topics))
+  }
+}
+
+export const initProject = (project, newTopics, session) => {
+  // delete all current topics and add new
+  return async (dispatch, getState) => {
+    const topics = await topicService.getAllByProject(project.id)
+    // TODO delete topics
+    console.log("topics:", topics)
+    // TODO create new topics
+    dispatch(setProjects(getState().projects))
   }
 }
 

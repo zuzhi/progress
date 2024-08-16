@@ -10,7 +10,8 @@ const Project = ({
   project,
   handleProjectEdit,
   onTopicEdit,
-  onTopicAdd
+  onTopicAdd,
+  openInEditor
 }) => {
   const dispatch = useDispatch()
   const session = useSelector(state => state.session)
@@ -62,6 +63,7 @@ const Project = ({
         <button className='button' onClick={() => handleProjectEdit(project)}>edit</button>
         <button className='button' onClick={() => dispatch(deleteProject(project))}>delete</button>
         <button className='button' onClick={() => dispatch(archiveProject(project))}>archive</button>
+        <button className='button' onClick={() => openInEditor(project)}>open in editor</button>
       </span>
       <button className='button' onClick={toggleCollapse}>
         {isCollapsed ? '[' + (project.topics?.length ?? 0) + ' more]' : '[-]'}

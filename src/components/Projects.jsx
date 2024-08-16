@@ -5,7 +5,8 @@ import { archiveProject, deleteProject } from '../reducers/projectReducer'
 const Projects = ({
   onProjectEdit,
   onTopicEdit,
-  onTopicAdd
+  onTopicAdd,
+  openInEditor
 }) => {
 
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ const Projects = ({
             }
             onTopicEdit={onTopicEdit}
             onTopicAdd={onTopicAdd}
+            openInEditor={openInEditor}
           />
         )
       }

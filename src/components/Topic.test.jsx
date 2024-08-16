@@ -88,7 +88,7 @@ test('topic with sub topics', () => {
     id: 1,
     name: 'Component testing is done with react-testing-library',
     status: 'pending',
-    subTopics: [
+    topics: [
       {
         id: 2,
         name: 'a sub topic',

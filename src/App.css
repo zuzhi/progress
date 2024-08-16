@@ -58,3 +58,33 @@ span.project {
     width: 100%;
   }
 }
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+
+.editor {
+  margin: 16px 0;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.container {
+  width: 500px;
+  max-width: 100%;
+}
+
+input {
+  border: 1px solid #ccc;
+}

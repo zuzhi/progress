@@ -25,7 +25,7 @@ const nestTopics = (topics) => {
 
   // First, map each topic by its ID
   topics.forEach(topic => {
-    topic.subTopics = []
+    topic.topics = []
     topicMap[topic.id] = topic
   })
 
@@ -37,7 +37,7 @@ const nestTopics = (topics) => {
     } else {
       const parentTopic = topicMap[topic.parent_topic_id]
       if (parentTopic) {
-        parentTopic.subTopics.push(topic)
+        parentTopic.topics.push(topic)
       }
     }
   })
@@ -51,7 +51,6 @@ export const initializeProjects = () => {
     if (projects) {
       // Transform the topics structure for each project
       const transformedProjects = transformProjects(projects)
-      console.log(transformedProjects)
       dispatch(setProjects(transformedProjects))
     }
   }
@@ -60,7 +59,7 @@ export const initializeProjects = () => {
 export const deleteProject = (project) => {
   return async (dispatch, getState) => {
     const projects = getState().projects
-    if (window.confirm('Delete ' + project.name)) {
+    if (window.confirm(`delete ${project.name}?`)) {
       await projectService.deleteProject(project)
       const newProjects = projects.filter(p => p.id !== project.id)
       dispatch(setProjects(newProjects))
@@ -71,7 +70,7 @@ export const deleteProject = (project) => {
 export const archiveProject = (project) => {
   return async (dispatch, getState) => {
     const projects = getState().projects
-    if (window.confirm('Archive ' + project.name)) {
+    if (window.confirm(`archive ${project.name}?`)) {
       await projectService.archiveProject(project)
       const newProjects = projects.filter(p => p.id !== project.id)
       dispatch(setProjects(newProjects))

@@ -13,15 +13,19 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { createProject, initializeProjects, setProjects, updateProject } from './reducers/projectReducer'
-import { updateTopic } from './reducers/topicReducer'
+import { createProject, initializeProjects, setProjects, transformProjects, updateProject } from './reducers/projectReducer'
+import { initProject, updateTopic } from './reducers/topicReducer'
 import { setSession } from './reducers/sessionReducer'
+import Editor from './components/Editor'
 
 function App() {
   const [loading, setLoading] = useState(true)
   const [projectFormVisible, setProjectFormVisible] = useState(false)
   const [projectEditFormVisible, setProjectEditFormVisible] = useState(false)
   const [topicEditFormVisible, setTopicEditFormVisible] = useState(false)
+  const [editorContent, setEditorContent] = useState('')
+  const [combinedContent, setCombinedContent] = useState('')
+  const [project, setProject] = useState(null)
 
   const projectFormRef = useRef()
   const projectEditFormVisibleRef = useRef()
@@ -30,7 +34,11 @@ function App() {
   const topicEditFormRef = useRef()
 
   const dispatch = useDispatch()
+  const projects = useSelector(state => state.projects)
   const session = useSelector(state => state.session)
+
+  // Use a ref to access the quill instance from the child component
+  const quillRef = useRef(null)
 
   useEffect(() => {
     const checkSession = async () => {
@@ -159,32 +167,129 @@ function App() {
     )
   }
 
+  const generateTopicList = (topics) => {
+    // Create the outer <ul> element
+    const ul = document.createElement('ul')
+
+    // Iterate over each topic
+    topics.forEach(topic => {
+      // Create a <li> element for each topic
+      const li = document.createElement('li')
+      li.setAttribute('data-id', topic.id)
+      li.setAttribute('data-project_id', topic.project_id)
+      if (topic.parent_topic_id) {
+        li.setAttribute('data-parent_topic_id', topic.parent_topic_id)
+      }
+      li.setAttribute('data-status', topic.status)
+      li.innerHTML = `${topic.name}`
+
+      // If the topic has subtopics, call the function recursively
+      if (topic.topics && topic.topics.length > 0) {
+        const subUl = generateTopicList(topic.topics)
+        li.appendChild(subUl)
+      }
+
+      // Append the <li> to the <ul>
+      ul.appendChild(li)
+    })
+
+    console.log(ul)
+    return ul
+  }
+
+  const handleOpenInEditor = (project) => {
+    console.log(project)
+
+    const topicsUl = generateTopicList(project.topics)
+
+    setProject(project)
+    setCombinedContent(topicsUl.outerHTML)
+  }
+
+  const extractAttribute = (element, attributeName) => {
+    return element.getAttribute(attributeName)
+  }
+
+  const parseTopic = (element) => {
+    // parse topic text, extract id, status and name, in form: [id]/[] [status]/[] name
+    return {
+      parentTopicId: extractAttribute(element, 'data-parent_topic_id'),
+      id: extractAttribute(element, 'data-id'),
+      status: extractAttribute(element, 'data-status'),
+      class: extractAttribute(element, 'class'),
+      name: element.innerText.trim()
+    }
+  }
+
+  const parseTopics = (editorHTML) => {
+    // deal with id, parent_topic_id, status
+    const tempDiv = document.createElement('div')
+    tempDiv.innerHTML = editorHTML
+
+    const parsedTopics = Array.from(tempDiv.querySelectorAll('li')).map(li =>
+      parseTopic(li)
+    )
+
+    console.log("Parsed Topics:", parsedTopics)
+    return parsedTopics
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    if (project && window.confirm(`(re)initialize ${project.name}?`)) {
+      const quill = quillRef.current?.getQuillInstance()
+      if (quill) {
+        const parsedTopics = parseTopics(quill.root.innerHTML)
+        dispatch(initProject(project, parsedTopics, session))
+      } else {
+        console.error("Quill instance is not available.")
+      }
+    }
+  }
+
   return (
     <>
       <h2 className='product-name'><b>progress</b></h2>
       {projectForm()}
       {projectEditForm()}
       {topicEditForm()}
-      <Projects
-        onProjectEdit={handleProjectEdit}
-        onTopicEdit={handleTopicEdit}
-      />
-      <span className="footer">
-        {session.user.email.split('@')[0]} |
-      </span>
-      <button
-        className='button'
-        onClick={async () => {
-          const { error } = await supabase.auth.signOut()
-          if (error) {
-            console.log('Error logging out:', error.message)
-          } else {
-            dispatch(setProjects([]))
-          }
-        }}
-      >
-        logout
-      </button>
+      <div className='row'>
+        <div className='column'>
+          <Projects
+            onProjectEdit={handleProjectEdit}
+            onTopicEdit={handleTopicEdit}
+            openInEditor={handleOpenInEditor}
+          />
+          <span className="footer">
+            {session.user.email.split('@')[0]} |
+          </span>
+          <button
+            className='button'
+            onClick={async () => {
+              const { error } = await supabase.auth.signOut()
+              if (error) {
+                console.log('Error logging out:', error.message)
+              } else {
+                //dispatch(initializeProjects())
+              }
+            }}
+          >
+            logout
+          </button>
+        </div>
+        <div className='column container'>
+          <form onSubmit={handleSubmit}>
+            <p><b>project editor</b></p>
+            <p>project name: {project?.name}</p>
+            <div className='form-group'>
+              <label>topics: </label>
+              <Editor ref={quillRef} content={combinedContent} setContent={setEditorContent} />
+            </div>
+            <button type="submit">save</button>
+          </form>
+        </div>
+      </div>
       <Analytics />
       <SpeedInsights />
     </>

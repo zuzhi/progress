@@ -50,9 +50,9 @@ const Topic = ({
         <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'skim'))}>skim</button>
       </span>
       {topicForm()}
-      {topic.subTopics && topic.subTopics.length > 0 && (
+      {topic.topics && topic.topics.length > 0 && (
         <ul>
-          {topic.subTopics.map(subTopic => (
+          {topic.topics.map(subTopic => (
             <Topic
               key={subTopic.id}
               topic={subTopic}
