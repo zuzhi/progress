@@ -15,10 +15,10 @@ const getAllByProject = async (projectId) => {
   }
 }
 
-const create = async ({ name, project_id, parent_topic_id, userId }) => {
+const create = async (topicToCreate) => {
   const { data: topic, error } = await supabase
     .from('topics')
-    .insert({ name, project_id, parent_topic_id, status: 'pending', user_id: userId })
+    .insert(topicToCreate)
     .select()
     .single()
 
@@ -61,4 +61,18 @@ const deleteTopic = async (topic) => {
     .eq('id', topic.id)
 }
 
-export default { getAllByProject, create, update, updateStatus, deleteTopic }
+const deleteTopics = async (projectId) => {
+  await supabase
+    .from('topics')
+    .delete()
+    .eq('project_id', projectId)
+}
+
+export default {
+  getAllByProject,
+  create,
+  update,
+  updateStatus,
+  deleteTopic,
+  deleteTopics
+}

@@ -112,14 +112,42 @@ export const getAllTopicsByProjectId = (projectId) => {
   }
 }
 
-export const initProject = (project, newTopics, session) => {
+export const initProject = (project, newTopics, userId) => {
   // delete all current topics and add new
-  return async (dispatch, getState) => {
-    const topics = await topicService.getAllByProject(project.id)
-    // TODO delete topics
-    console.log("topics:", topics)
-    // TODO create new topics
-    dispatch(setProjects(getState().projects))
+  return async dispatch => {
+    // delete topics
+    await topicService.deleteTopics(project.id)
+
+    // save new topics, use indentTracker to keep track of parent_topic_id
+    let indentTracker = []
+    for (const topic of newTopics) {
+      if (topic.class === null) {
+        const topicToCreate = {
+          name: topic.name,
+          project_id: project.id,
+          status: 'pending',
+          user_id: userId
+        }
+        const created = await topicService.create(topicToCreate)
+        indentTracker = []
+        indentTracker[0] = created.id
+      } else {
+        const indentLevel = parseInt(topic.class.split('-').pop(), 10)
+        const parent_topic_id = indentTracker[indentLevel - 1]
+        const topicToCreate = {
+          name: topic.name,
+          project_id: project.id,
+          parent_topic_id: parent_topic_id,
+          status: 'pending',
+          user_id: userId
+        }
+        const created = await topicService.create(topicToCreate)
+        indentTracker[indentLevel] = created.id
+      }
+    }
+    const projects = await projectService.getAllWithReference()
+    const transformedProjects = transformProjects(projects)
+    dispatch(setProjects(transformedProjects))
   }
 }
 

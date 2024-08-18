@@ -82,7 +82,7 @@ function App() {
 
   const handleProjectCreate = async (project) => {
     projectFormRef.current.toggleVisibility()
-    dispatch(createProject(project, session))
+    dispatch(createProject(project, session?.user?.id))
   }
 
   const projectEditForm = () => (
@@ -185,14 +185,11 @@ function App() {
       ul.appendChild(li)
     })
 
-    console.log(ul)
     return ul
   }
 
   const handleOpenInEditor = (project) => {
-    console.log(project)
-
-    const topicsUl = generateTopicList(project.topics)
+    const topicsUl = generateTopicList(project.topics ?? [])
 
     setProject(project)
     setCombinedContent(topicsUl.outerHTML)
@@ -218,7 +215,6 @@ function App() {
       parseTopic(li)
     )
 
-    console.log("parsed topics:", parsedTopics)
     return parsedTopics
   }
 
@@ -229,7 +225,9 @@ function App() {
       const quill = quillRef.current?.getQuillInstance()
       if (quill) {
         const parsedTopics = parseTopics(quill.root.innerHTML)
-        dispatch(initProject(project, parsedTopics, session))
+        dispatch(initProject(project, parsedTopics, session?.user?.id))
+        setProject(null)
+        quill.setContents([])
       } else {
         console.error("Quill instance is not available.")
       }

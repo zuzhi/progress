@@ -89,11 +89,11 @@ export const updateProject = (project) => {
   }
 }
 
-export const createProject = (project, session) => {
+export const createProject = (project, userId) => {
   return async (dispatch, getState) => {
     const projects = getState().projects
     const savedProject = await projectService
-      .create({ ...project, userId: session?.user?.id })
+      .create({ ...project, userId: userId })
     const newProjects = projects.concat(savedProject)
     dispatch(setProjects(newProjects))
   }
