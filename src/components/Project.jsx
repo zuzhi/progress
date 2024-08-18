@@ -30,12 +30,12 @@ const Project = ({
 
   // Update localStorage whenever isCollapsed state changes
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(isCollapsed));
-  }, [isCollapsed, storageKey]);
+    localStorage.setItem(storageKey, JSON.stringify(isCollapsed))
+  }, [isCollapsed, storageKey])
 
   const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+    setIsCollapsed(!isCollapsed)
+  }
 
   const topicFormRef = useRef()
 
@@ -54,6 +54,19 @@ const Project = ({
     </Togglable>
   )
 
+  const countTopics = (topics) => {
+    let count = 0
+
+    topics.forEach(topic => {
+      count++ // Count the current topic
+      if (topic.topics && topic.topics.length > 0) {
+        count += countTopics(topic.topics) // Recursively count nested topics
+      }
+    })
+
+    return count
+  }
+
   return (
     <li>
       <span className='project'>
@@ -66,7 +79,7 @@ const Project = ({
         <button className='button' onClick={() => openInEditor(project)}>open in editor</button>
       </span>
       <button className='button' onClick={toggleCollapse}>
-        {isCollapsed ? '[' + (project.topics?.length ?? 0) + ' more]' : '[-]'}
+        {isCollapsed ? '[' + (project.topics ? countTopics(project.topics) : 0) + ' more]' : '[-]'}
       </button>
       {!isCollapsed && (
         <div className='collapseContent'>
