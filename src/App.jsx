@@ -13,7 +13,7 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { createProject, initializeProjects, setProjects, transformProjects, updateProject } from './reducers/projectReducer'
+import { createProject, initializeProjects, setProjects, updateProject } from './reducers/projectReducer'
 import { initProject, updateTopic } from './reducers/topicReducer'
 import { setSession } from './reducers/sessionReducer'
 import Editor from './components/Editor'
@@ -221,7 +221,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (project && window.confirm(`(re)initialize ${project.name}?`)) {
+    if (project && window.confirm(`(re)initialize ${project.name}? status will be lost.`)) {
       const quill = quillRef.current?.getQuillInstance()
       if (quill) {
         const parsedTopics = parseTopics(quill.root.innerHTML)
@@ -247,23 +247,6 @@ function App() {
             onTopicEdit={handleTopicEdit}
             openInEditor={handleOpenInEditor}
           />
-          <span className="footer">
-            {session.user.email.split('@')[0]} |
-          </span>
-          <button
-            className='button'
-            onClick={async () => {
-              const { error } = await supabase.auth.signOut()
-              if (error) {
-                console.log('error logging out:', error.message)
-              } else {
-                dispatch(setProjects([]))
-                setProject(null)
-              }
-            }}
-          >
-            logout
-          </button>
         </div>
         <div className='column container'>
           <form onSubmit={handleSubmit}>
@@ -276,6 +259,25 @@ function App() {
             <button type="submit">save</button>
           </form>
         </div>
+      </div>
+      <div>
+        <span className="footer">
+          {session.user.email.split('@')[0]} |
+        </span>
+        <button
+          className='button'
+          onClick={async () => {
+            const { error } = await supabase.auth.signOut()
+            if (error) {
+              console.log('error logging out:', error.message)
+            } else {
+              dispatch(setProjects([]))
+              setProject(null)
+            }
+          }}
+        >
+          logout
+        </button>
       </div>
       <Analytics />
       <SpeedInsights />
