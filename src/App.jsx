@@ -14,16 +14,15 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { createProject, initializeProjects, setProjects, updateProject } from './reducers/projectReducer'
-import { initProject, updateTopic } from './reducers/topicReducer'
+import { updateTopic } from './reducers/topicReducer'
 import { setSession } from './reducers/sessionReducer'
-import Editor from './components/Editor'
+import EditorForm from './components/EditorForm'
 
 function App() {
   const [loading, setLoading] = useState(true)
   const [projectFormVisible, setProjectFormVisible] = useState(false)
   const [projectEditFormVisible, setProjectEditFormVisible] = useState(false)
   const [topicEditFormVisible, setTopicEditFormVisible] = useState(false)
-  const [editorFormVisible, setEditorFormVisible] = useState(false)
   const [combinedContent, setCombinedContent] = useState('')
   const [project, setProject] = useState(null)
 
@@ -32,13 +31,10 @@ function App() {
   const projectEditFormRef = useRef()
   const topicEditFormVisibleRef = useRef()
   const topicEditFormRef = useRef()
-  const editorFormRef = useRef()
+  const editorFormVisibleRef = useRef()
 
   const dispatch = useDispatch()
   const session = useSelector(state => state.session)
-
-  // Use a ref to access the quill instance from the child component
-  const quillRef = useRef(null)
 
   useEffect(() => {
     const checkSession = async () => {
@@ -191,55 +187,11 @@ function App() {
   }
 
   const handleOpenInEditor = (project) => {
-    editorFormRef.current.setVisible(true)
+    editorFormVisibleRef.current.setVisible(true)
 
     const topicsUl = generateTopicList(project.topics ?? [])
-
-    setProject(project)
     setCombinedContent(topicsUl.outerHTML)
-  }
-
-  const extractAttribute = (element, attributeName) => {
-    return element.getAttribute(attributeName)
-  }
-
-  const parseTopic = (element) => {
-    // parse topic text and class(for hierarchy)
-    return {
-      class: extractAttribute(element, 'class'),
-      name: element.innerText.trim()
-    }
-  }
-
-  const parseTopics = (editorHTML) => {
-    const tempDiv = document.createElement('div')
-    tempDiv.innerHTML = editorHTML
-
-    const parsedTopics = Array.from(tempDiv.querySelectorAll('li')).map(li =>
-      parseTopic(li)
-    )
-
-    return parsedTopics
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-
-    if (project && window.confirm(`(re)initialize ${project.name}? status will be lost.`)) {
-      const quill = quillRef.current?.getQuillInstance()
-      if (quill) {
-        const parsedTopics = parseTopics(quill.root.innerHTML)
-        dispatch(initProject(project, parsedTopics, session?.user?.id))
-        setProject(null)
-        quill.setContents([])
-      } else {
-        console.error("Quill instance is not available.")
-      }
-    }
-  }
-
-  const handleEditorFormVisibleChange = (visible) => {
-    setEditorFormVisible(visible)
+    setProject(project)
   }
 
   return (
@@ -257,15 +209,12 @@ function App() {
           />
         </div>
         <div className='column container'>
-          <Togglable ref={editorFormRef} onVisibleChange={handleEditorFormVisibleChange}>
-            <form onSubmit={handleSubmit}>
-              <p><b>project editor</b></p>
-              <div className='form-group'>
-                <label>{project?.name}</label>
-                <Editor ref={quillRef} content={combinedContent} />
-              </div>
-              <button type="submit">save</button>
-            </form>
+          <Togglable ref={editorFormVisibleRef}>
+            <EditorForm
+              project={project}
+              combinedContent={combinedContent}
+              setProject={setProject}
+            />
           </Togglable>
         </div>
       </div>
