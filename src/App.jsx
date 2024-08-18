@@ -23,6 +23,7 @@ function App() {
   const [projectFormVisible, setProjectFormVisible] = useState(false)
   const [projectEditFormVisible, setProjectEditFormVisible] = useState(false)
   const [topicEditFormVisible, setTopicEditFormVisible] = useState(false)
+  const [editorFormVisible, setEditorFormVisible] = useState(false)
   const [combinedContent, setCombinedContent] = useState('')
   const [project, setProject] = useState(null)
 
@@ -31,6 +32,7 @@ function App() {
   const projectEditFormRef = useRef()
   const topicEditFormVisibleRef = useRef()
   const topicEditFormRef = useRef()
+  const editorFormRef = useRef()
 
   const dispatch = useDispatch()
   const session = useSelector(state => state.session)
@@ -189,6 +191,8 @@ function App() {
   }
 
   const handleOpenInEditor = (project) => {
+    editorFormRef.current.setVisible(true)
+
     const topicsUl = generateTopicList(project.topics ?? [])
 
     setProject(project)
@@ -234,6 +238,10 @@ function App() {
     }
   }
 
+  const handleEditorFormVisibleChange = (visible) => {
+    setEditorFormVisible(visible)
+  }
+
   return (
     <>
       <h2 className='product-name'><b>progress</b></h2>
@@ -249,15 +257,16 @@ function App() {
           />
         </div>
         <div className='column container'>
-          <form onSubmit={handleSubmit}>
-            <p><b>project editor</b></p>
-            <p>project name: {project?.name}</p>
-            <div className='form-group'>
-              <label>topics: </label>
-              <Editor ref={quillRef} content={combinedContent} />
-            </div>
-            <button type="submit">save</button>
-          </form>
+          <Togglable ref={editorFormRef} onVisibleChange={handleEditorFormVisibleChange}>
+            <form onSubmit={handleSubmit}>
+              <p><b>project editor</b></p>
+              <div className='form-group'>
+                <label>{project?.name}</label>
+                <Editor ref={quillRef} content={combinedContent} />
+              </div>
+              <button type="submit">save</button>
+            </form>
+          </Togglable>
         </div>
       </div>
       <div>

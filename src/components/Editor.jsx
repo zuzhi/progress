@@ -25,7 +25,7 @@ const Editor = forwardRef(({ content }, ref) => {
   }, [quill, content])
 
   return (
-    <div style={{ width: 500, height: 200 }}>
+    <div style={{ maxWidth: 500, height: 300 }}>
       <div ref={quillRef} />
     </div>
   )
