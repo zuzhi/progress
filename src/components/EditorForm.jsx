@@ -2,10 +2,12 @@ import { useRef } from "react"
 import Editor from "./Editor"
 import { useDispatch, useSelector } from "react-redux"
 import { initProject } from "../reducers/topicReducer"
+import { clearSelectedProject } from "../reducers/projectReducer"
 
-const EditorForm = ({ project, combinedContent, setProject }) => {
+const EditorForm = ({ combinedContent }) => {
   const dispatch = useDispatch()
   const session = useSelector(state => state.session)
+  const project = useSelector(state => state.projects.selected)
 
   const quillRef = useRef(null)
 
@@ -40,7 +42,7 @@ const EditorForm = ({ project, combinedContent, setProject }) => {
       if (quill) {
         const parsedTopics = parseTopics(quill.root.innerHTML)
         dispatch(initProject(project, parsedTopics, session?.user?.id))
-        setProject(null)
+        dispatch(clearSelectedProject())
         quill.setContents([])
       } else {
         console.error("Quill instance is not available.")

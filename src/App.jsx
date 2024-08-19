@@ -13,10 +13,16 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { createProject, initializeProjects, setProjects, updateProject } from './reducers/projectReducer'
+import {
+  createProject,
+  initializeProjects,
+  setSelectedProject,
+  updateProject
+} from './reducers/projectReducer'
 import { updateTopic } from './reducers/topicReducer'
 import { setSession } from './reducers/sessionReducer'
 import EditorForm from './components/EditorForm'
+import Footer from './components/Footer'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -24,7 +30,6 @@ function App() {
   const [projectEditFormVisible, setProjectEditFormVisible] = useState(false)
   const [topicEditFormVisible, setTopicEditFormVisible] = useState(false)
   const [combinedContent, setCombinedContent] = useState('')
-  const [project, setProject] = useState(null)
 
   const projectFormRef = useRef()
   const projectEditFormVisibleRef = useRef()
@@ -85,7 +90,11 @@ function App() {
 
   const projectEditForm = () => (
     <Togglable ref={projectEditFormVisibleRef} onVisibleChange={handleProjectEditFormVisibleChange}>
-      <ProjectEditForm onProjectUpdate={handleProjectUpdate} ref={projectEditFormRef} isVisible={projectEditFormVisible} />
+      <ProjectEditForm
+        onProjectUpdate={handleProjectUpdate}
+        ref={projectEditFormRef}
+        isVisible={projectEditFormVisible}
+      />
     </Togglable>
   )
 
@@ -102,7 +111,11 @@ function App() {
 
   const topicEditForm = () => (
     <Togglable ref={topicEditFormVisibleRef} onVisibleChange={handleTopicEditFormVisibleChange}>
-      <TopicEditForm onTopicUpdate={handleTopicUpdate} ref={topicEditFormRef} isVisible={topicEditFormVisible} />
+      <TopicEditForm
+        onTopicUpdate={handleTopicUpdate}
+        ref={topicEditFormRef}
+        isVisible={topicEditFormVisible}
+      />
     </Togglable>
   )
 
@@ -191,7 +204,7 @@ function App() {
 
     const topicsUl = generateTopicList(project.topics ?? [])
     setCombinedContent(topicsUl.outerHTML)
-    setProject(project)
+    dispatch(setSelectedProject(project))
   }
 
   return (
@@ -210,33 +223,11 @@ function App() {
         </div>
         <div className='column container'>
           <Togglable ref={editorFormVisibleRef}>
-            <EditorForm
-              project={project}
-              combinedContent={combinedContent}
-              setProject={setProject}
-            />
+            <EditorForm combinedContent={combinedContent} />
           </Togglable>
         </div>
       </div>
-      <div>
-        <span className="footer">
-          {session.user.email.split('@')[0]} |
-        </span>
-        <button
-          className='button'
-          onClick={async () => {
-            const { error } = await supabase.auth.signOut()
-            if (error) {
-              console.log('error logging out:', error.message)
-            } else {
-              dispatch(setProjects([]))
-              setProject(null)
-            }
-          }}
-        >
-          logout
-        </button>
-      </div>
+      <Footer />
       <Analytics />
       <SpeedInsights />
     </>

@@ -10,7 +10,7 @@ const Projects = ({
 }) => {
 
   const dispatch = useDispatch()
-  const projects = useSelector(state => state.projects)
+  const projects = useSelector(state => state.projects.list)
 
   return (
     <ul>

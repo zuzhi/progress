@@ -3,15 +3,24 @@ import projectService from '../services/projects'
 
 const projectSlice = createSlice({
   name: 'projects',
-  initialState: [],
+  initialState: {
+    list: [],
+    selected: null
+  },
   reducers: {
     setProjects(state, action) {
-      return action.payload
+      state.list = action.payload
+    },
+    setSelectedProject(state, action) {
+      state.selected = action.payload
+    },
+    clearSelectedProject(state) {
+      state.selected = null
     }
   }
 })
 
-export const { setProjects } = projectSlice.actions
+export const { setProjects, setSelectedProject, clearSelectedProject } = projectSlice.actions
 
 export const transformProjects = (projects) => {
   return projects.map(project => ({
@@ -58,7 +67,7 @@ export const initializeProjects = () => {
 
 export const deleteProject = (project) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects
+    const projects = getState().projects.list
     if (window.confirm(`delete ${project.name}?`)) {
       await projectService.deleteProject(project)
       const newProjects = projects.filter(p => p.id !== project.id)
@@ -69,7 +78,7 @@ export const deleteProject = (project) => {
 
 export const archiveProject = (project) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects
+    const projects = getState().projects.list
     if (window.confirm(`archive ${project.name}?`)) {
       await projectService.archiveProject(project)
       const newProjects = projects.filter(p => p.id !== project.id)
@@ -80,7 +89,7 @@ export const archiveProject = (project) => {
 
 export const updateProject = (project) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects
+    const projects = getState().projects.list
     const updatedProject = await projectService
       .update(project.id, project.name)
     const newProjects = projects.map(p =>
@@ -91,7 +100,7 @@ export const updateProject = (project) => {
 
 export const createProject = (project, userId) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects
+    const projects = getState().projects.list
     const savedProject = await projectService
       .create({ ...project, userId: userId })
     const newProjects = projects.concat(savedProject)
