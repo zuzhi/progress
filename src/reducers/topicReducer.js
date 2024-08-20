@@ -54,7 +54,7 @@ const updateTopicInNestedTopics = (topics, topicToUpdate) => {
 
 export const deleteTopic = (topic) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects
+    const projects = getState().projects.list
     if (window.confirm(`delete ${topic.name}?`)) {
       await topicService.deleteTopic(topic)
       const newProjects = projects.map(project => ({
@@ -69,7 +69,7 @@ export const deleteTopic = (topic) => {
 
 export const updateTopic = (topic) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects
+    const projects = getState().projects.list
     const updatedTopic = await topicService
       .update(topic.id, topic.name)
     const newProjects = projects.map(project => ({
@@ -82,7 +82,7 @@ export const updateTopic = (topic) => {
 
 export const updateTopicStatus = (topic, status) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects
+    const projects = getState().projects.list
     const updatedTopic = await topicService
       .updateStatus(topic.id, status)
     const newProjects = projects.map(project => ({
