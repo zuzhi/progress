@@ -89,7 +89,11 @@ const getArchivesWithReference = async () => {
 const create = async ({ name, userId }) => {
   const { data: project, error } = await supabase
     .from('projects')
-    .insert({ name: name, user_id: userId })
+    .insert({
+      name: name,
+      user_id: userId,
+      status: 'normal'
+    })
     .select()
     .single()
 

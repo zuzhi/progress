@@ -32,6 +32,7 @@ export const {
 } = projectSlice.actions
 
 export const transformProjects = (projects) => {
+  // Transform the topics structure for each project
   return projects.map(project => ({
     ...project,
     topics: nestTopics(project.topics)
@@ -63,18 +64,36 @@ const nestTopics = (topics) => {
   return nestedTopics
 }
 
+export const fetchProjects = () => {
+  return async dispatch => {
+    const projects = await projectService.getAllWithReference()
+    if (projects) {
+      const transformedProjects = transformProjects(projects)
+      dispatch(setProjects(transformedProjects))
+    }
+  }
+}
+
+export const fetchArchives = () => {
+  return async dispatch => {
+    const archives = await projectService.getArchivesWithReference()
+    if (archives) {
+      const transformedProjects = transformProjects(archives)
+      dispatch(setArchives(transformedProjects))
+    }
+  }
+}
+
 export const initializeProjects = () => {
   return async dispatch => {
     const projects = await projectService.getAllWithReference()
     const archives = await projectService.getArchivesWithReference()
     if (projects) {
-      // Transform the topics structure for each project
       const transformedProjects = transformProjects(projects)
       dispatch(setProjects(transformedProjects))
     }
 
     if (archives) {
-      // Transform the topics structure for each project
       const transformedProjects = transformProjects(archives)
       dispatch(setArchives(transformedProjects))
     }
@@ -139,8 +158,7 @@ export const createProject = (project, userId) => {
     const savedProject = await projectService
       .create({
         ...project,
-        status: 'normal',
-        user_id: userId
+        userId
       })
     const newProjects = projects.concat(savedProject)
     dispatch(setProjects(newProjects))

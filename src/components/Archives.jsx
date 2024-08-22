@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { unarchiveProject } from '../reducers/projectReducer'
-import { countTopics } from '../lib/util'
-import { useState } from 'react'
+import { fetchArchives, fetchProjects, unarchiveProject } from '../reducers/projectReducer'
+import { useEffect, useState } from 'react'
 
 const Topic = ({ topic }) => {
   return (
@@ -64,7 +63,13 @@ const Project = ({ project }) => {
 }
 
 const Projects = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchArchives())
+  }, [dispatch])
+
   const archives = useSelector(state => state.projects.archives)
+
   return (
     <ul>
       {
@@ -82,7 +87,6 @@ const Projects = () => {
 const Archives = () => {
   return (
     <>
-      <p><b>archives</b></p>
       <Projects />
     </>
   )

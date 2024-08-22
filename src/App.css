@@ -44,10 +44,6 @@ span.project {
   font-weight: bold;
 }
 
-.product-name {
-  font-family: monospace;
-}
-
 .auth-form,
 .howtouse {
   width: 400px;
@@ -93,4 +89,29 @@ label {
 
 input {
   border: 1px solid #ccc;
+}
+
+.header {
+  font-family: monospace;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 10px;
+}
+
+.header a {
+  color: #000;
+  text-decoration: none;
+}
+
+.header a.active {
+  text-decoration: underline;
+}
+
+.header a:hover {
+  text-decoration: underline;
+}
+
+.header .product-name {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
