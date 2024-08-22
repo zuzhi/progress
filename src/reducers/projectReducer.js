@@ -102,7 +102,11 @@ export const createProject = (project, userId) => {
   return async (dispatch, getState) => {
     const projects = getState().projects.list
     const savedProject = await projectService
-      .create({ ...project, userId: userId })
+      .create({
+        ...project,
+        status: 'normal',
+        user_id: userId
+      })
     const newProjects = projects.concat(savedProject)
     dispatch(setProjects(newProjects))
   }

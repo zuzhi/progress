@@ -97,7 +97,11 @@ export const updateTopicStatus = (topic, status) => {
 export const createTopic = (topic, userId) => {
   return async dispatch => {
     const savedTopic = await topicService
-      .create({ ...topic, user_id: userId })
+      .create({
+        ...topic,
+        status: 'pending',
+        user_id: userId
+      })
     const projects = await projectService.getAllWithReference()
     const transformedProjects = transformProjects(projects)
     const updatedProjects = await updateProgress(transformedProjects, savedTopic.project_id)
