@@ -24,6 +24,7 @@ import { setSession } from './reducers/sessionReducer'
 import EditorForm from './components/EditorForm'
 import Footer from './components/Footer'
 import HowToUse from './components/HowToUse'
+import Archives from './components/Archives'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -137,18 +138,20 @@ function App() {
 
   if (!session) {
     return (
-      <div className='auth-form'>
-        <h2 className='product-name'><b>progress</b></h2>
-        <p>
-          In case you need to record the <strong>progress</strong> while getting things done.
-        </p>
-        <Auth
-          supabaseClient={supabase}
-          appearance={{ theme: ThemeSupa }}
-          providers={[]}
-        />
+      <>
+        <div className='auth-form'>
+          <h2 className='product-name'><b>progress</b></h2>
+          <p>
+            In case you need to record the <strong>progress</strong> while getting things done.
+          </p>
+          <Auth
+            supabaseClient={supabase}
+            appearance={{ theme: ThemeSupa }}
+            providers={[]}
+          />
+        </div>
         <HowToUse />
-      </div>
+      </>
     )
   }
 
@@ -191,6 +194,7 @@ function App() {
       {topicEditForm()}
       <div className='row'>
         <div className='column'>
+          <p><b>projects</b></p>
           <Projects
             onProjectEdit={handleProjectEdit}
             onTopicEdit={handleTopicEdit}
@@ -203,6 +207,7 @@ function App() {
           </Togglable>
         </div>
       </div>
+      <Archives />
       <Footer />
       <Analytics />
       <SpeedInsights />

@@ -58,6 +58,34 @@ const getAllWithReference = async () => {
   }
 }
 
+const getArchivesWithReference = async () => {
+  let { data: projects, error } = await supabase
+    .from('projects')
+    .select(`
+      id,
+      name,
+      progress,
+      topics (
+        id,
+        project_id,
+        parent_topic_id,
+        name,
+        status
+      )
+    `)
+    .eq('status', 'archived')
+    .order('id', { ascending: true })
+    .order('id', { ascending: true, referencedTable: 'topics' })
+
+  if (projects) {
+    return projects
+  }
+
+  if (error) {
+    console.log(error)
+  }
+}
+
 const create = async ({ name, userId }) => {
   const { data: project, error } = await supabase
     .from('projects')
@@ -114,13 +142,27 @@ const archiveProject = async (project) => {
   return data[0]
 }
 
+const unarchiveProject = async (project) => {
+  const { data, error } = await supabase
+    .from('projects')
+    .update({ status: 'normal' })
+    .eq('id', project.id)
+    .select()
+  if (error) {
+    console.log(error)
+  }
+  return data[0]
+}
+
 export default {
   getAll,
   getOne,
   getAllWithReference,
+  getArchivesWithReference,
   create,
   update,
   updateProgress,
   deleteProject,
-  archiveProject
+  archiveProject,
+  unarchiveProject
 }

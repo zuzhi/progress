@@ -22,6 +22,7 @@ const ProjectForm = ({ onProjectCreate, isVisible }) => {
   return (
     <div>
       <form onSubmit={onSubmit}>
+        <p><b>new project</b></p>
         <input
           ref={inputRef}
           value={newProject}

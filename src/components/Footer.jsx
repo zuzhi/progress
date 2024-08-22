@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { supabase } from '../lib/initSupabase'
-import { clearSelectedProject, setProjects } from "../reducers/projectReducer"
+import { clearSelectedProject, setArchives, setProjects } from "../reducers/projectReducer"
 
 const Footer = () => {
   const dispatch = useDispatch()
@@ -19,6 +19,7 @@ const Footer = () => {
             console.log('error logging out:', error.message)
           } else {
             dispatch(setProjects([]))
+            dispatch(setArchives([]))
             dispatch(clearSelectedProject())
           }
         }}

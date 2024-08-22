@@ -48,7 +48,8 @@ span.project {
   font-family: monospace;
 }
 
-.auth-form {
+.auth-form,
+.howtouse {
   width: 400px;
 }
 
@@ -62,7 +63,8 @@ span.project {
 
 /* Styles for mobile screens */
 @media (max-width: 768px) {
-  .auth-form {
+  .auth-form,
+  .howtouse {
     width: 100%;
   }
 }
@@ -88,11 +90,6 @@ label {
   display: block;
   margin-bottom: 4px;
 }
-
-/* .container { */
-/*   width: 500px; */
-/*   max-width: 100%; */
-/* } */
 
 input {
   border: 1px solid #ccc;

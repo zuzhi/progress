@@ -38,7 +38,7 @@ const Topic = ({
   return (
     <li>
       <span className={topic.status.replace(' ', '-')}>
-      {topic.name}
+        {topic.name}
       </span>
       <span className='buttons'>
         <button className='button' onClick={() => onTopicEdit(topic)}>edit</button>

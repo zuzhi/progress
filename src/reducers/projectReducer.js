@@ -5,11 +5,15 @@ const projectSlice = createSlice({
   name: 'projects',
   initialState: {
     list: [],
+    archives: [],
     selected: null
   },
   reducers: {
     setProjects(state, action) {
       state.list = action.payload
+    },
+    setArchives(state, action) {
+      state.archives = action.payload
     },
     setSelectedProject(state, action) {
       state.selected = action.payload
@@ -20,7 +24,12 @@ const projectSlice = createSlice({
   }
 })
 
-export const { setProjects, setSelectedProject, clearSelectedProject } = projectSlice.actions
+export const {
+  setProjects,
+  setArchives,
+  setSelectedProject,
+  clearSelectedProject
+} = projectSlice.actions
 
 export const transformProjects = (projects) => {
   return projects.map(project => ({
@@ -57,10 +66,17 @@ const nestTopics = (topics) => {
 export const initializeProjects = () => {
   return async dispatch => {
     const projects = await projectService.getAllWithReference()
+    const archives = await projectService.getArchivesWithReference()
     if (projects) {
       // Transform the topics structure for each project
       const transformedProjects = transformProjects(projects)
       dispatch(setProjects(transformedProjects))
+    }
+
+    if (archives) {
+      // Transform the topics structure for each project
+      const transformedProjects = transformProjects(archives)
+      dispatch(setArchives(transformedProjects))
     }
   }
 }
@@ -79,10 +95,29 @@ export const deleteProject = (project) => {
 export const archiveProject = (project) => {
   return async (dispatch, getState) => {
     const projects = getState().projects.list
+    const archives = getState().projects.archives
     if (window.confirm(`archive ${project.name}?`)) {
       await projectService.archiveProject(project)
       const newProjects = projects.filter(p => p.id !== project.id)
       dispatch(setProjects(newProjects))
+      const newArchives = archives.concat(project)
+      newArchives.sort((a, b) => a.id - b.id)
+      dispatch(setArchives(newArchives))
+    }
+  }
+}
+
+export const unarchiveProject = (project) => {
+  return async (dispatch, getState) => {
+    const projects = getState().projects.list
+    const archives = getState().projects.archives
+    if (window.confirm(`unarchive ${project.name}?`)) {
+      await projectService.unarchiveProject(project)
+      const newProjects = projects.concat(project)
+      newProjects.sort((a, b) => a.id - b.id)
+      dispatch(setProjects(newProjects))
+      const newArchives = archives.filter(p => p.id !== project.id)
+      dispatch(setArchives(newArchives))
     }
   }
 }

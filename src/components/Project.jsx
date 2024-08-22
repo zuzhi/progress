@@ -5,6 +5,7 @@ import TopicForm from './TopicForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { archiveProject, deleteProject } from '../reducers/projectReducer'
 import { createTopic } from '../reducers/topicReducer'
+import { countTopics } from '../lib/util'
 
 const Project = ({
   project,
@@ -53,19 +54,6 @@ const Project = ({
       <TopicForm onTopicCreate={handleTopicCreate} isVisible={topicFormVisible} />
     </Togglable>
   )
-
-  const countTopics = (topics) => {
-    let count = 0
-
-    topics.forEach(topic => {
-      count++ // Count the current topic
-      if (topic.topics && topic.topics.length > 0) {
-        count += countTopics(topic.topics) // Recursively count nested topics
-      }
-    })
-
-    return count
-  }
 
   return (
     <li>
