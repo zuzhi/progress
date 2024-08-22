@@ -67,7 +67,7 @@ const Project = ({
         <button className='button' onClick={() => openInEditor(project)}>open in editor</button>
       </span>
       <button className='button' onClick={toggleCollapse}>
-        {isCollapsed ? '[' + (project.topics ? countTopics(project.topics) : 0) + ' more]' : '[-]'}
+        {isCollapsed ? '[' + (project.topics ? project.topics.length : 0) + ' more]' : '[-]'}
       </button>
       {!isCollapsed && (
         <div className='collapseContent'>
