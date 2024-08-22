@@ -26,7 +26,7 @@ const Topic = ({
       project_id: topic.project_id,
       parent_topic_id: topic.id
     }
-    dispatch(createTopic(topicToSave, session))
+    dispatch(createTopic(topicToSave, session?.user?.id))
   }
 
   const topicForm = () => (

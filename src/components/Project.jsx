@@ -45,7 +45,7 @@ const Project = ({
       ...topicObject,
       project_id: project.id
     }
-    dispatch(createTopic(topicToSave, session))
+    dispatch(createTopic(topicToSave, session?.user?.id))
   }
 
   const topicForm = () => (
