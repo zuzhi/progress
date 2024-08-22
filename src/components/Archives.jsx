@@ -33,7 +33,7 @@ const Project = ({ project }) => {
 
   return (
     <li>
-      <span className='project'>
+      <span className='project archived'>
         {project.name} - {project.progress}%
       </span>
       <span className='buttons'>

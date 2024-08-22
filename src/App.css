@@ -44,6 +44,10 @@ span.project {
   font-weight: bold;
 }
 
+span.project.archived {
+  color: #828282;
+}
+
 .auth-form,
 .howtouse {
   width: 400px;
