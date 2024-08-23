@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteProject, fetchArchives, fetchProjects, unarchiveProject } from '../reducers/projectReducer'
 import { useEffect, useState } from 'react'
+import PageTitle from './PageTitle'
 
 const Topic = ({ topic }) => {
   return (
@@ -88,6 +89,7 @@ const Projects = () => {
 const Archives = () => {
   return (
     <>
+      <PageTitle title="archives" />
       <Projects />
     </>
   )

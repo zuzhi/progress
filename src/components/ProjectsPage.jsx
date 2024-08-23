@@ -13,6 +13,7 @@ import {
   setSelectedProject,
   updateProject
 } from "../reducers/projectReducer"
+import PageTitle from "./PageTitle"
 
 const ProjectsPage = () => {
   const [projectFormVisible, setProjectFormVisible] = useState(false)
@@ -125,6 +126,7 @@ const ProjectsPage = () => {
 
   return (
     <>
+      <PageTitle title="home" />
       {projectForm()}
       {projectEditForm()}
       {topicEditForm()}

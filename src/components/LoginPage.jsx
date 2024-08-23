@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { setSession } from '../reducers/sessionReducer'
 import { useNavigate } from 'react-router-dom'
+import PageTitle from './PageTitle'
 
 const LoginPage = () => {
   const dispatch = useDispatch()
@@ -36,10 +37,14 @@ const LoginPage = () => {
 
   return (
     <>
+      <PageTitle title="login" />
       <div className='auth-form'>
         <p>
           In case you need to record the <strong>progress</strong> while getting things done.
         </p>
+        <small>
+          Books, Courses, Tutorials, or anything with a table of contents.
+        </small>
         <Auth
           supabaseClient={supabase}
           appearance={{ theme: ThemeSupa }}

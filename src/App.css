@@ -119,3 +119,8 @@ input {
   font-size: 1.2rem;
   font-weight: bold;
 }
+
+#error-page {
+  font-family: monospace;
+  color: #828282;
+}

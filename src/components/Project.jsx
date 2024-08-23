@@ -5,7 +5,6 @@ import TopicForm from './TopicForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { archiveProject, deleteProject } from '../reducers/projectReducer'
 import { createTopic } from '../reducers/topicReducer'
-import { countTopics } from '../lib/util'
 
 const Project = ({
   project,

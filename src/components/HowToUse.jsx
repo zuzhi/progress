@@ -16,11 +16,11 @@ const HowToUse = () => {
       </p>
       <ul>
         <li>
-          <b>fullstackopen - 50%</b>
+          <b>fullstackopen - 75%</b>
           <ul>
             <li><s>Part 0: Fundamentals of Web apps</s></li>
             <li><s>Part 1: Introduction to React</s></li>
-            <li>Part 2: Communicating with server</li>
+            <li><s>Part 2: Communicating with server</s></li>
             <li>Part 3: Programming a server with NodeJS and Express</li>
           </ul>
         </li>

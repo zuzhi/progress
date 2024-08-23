@@ -3,13 +3,14 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import './App.css'
 import Footer from './components/Footer'
-import { Link, NavLink, Route, Routes, useNavigate } from "react-router-dom"
+import { NavLink, Route, Routes, useNavigate } from "react-router-dom"
 import Archives from "./components/Archives"
 import LoginPage from "./components/LoginPage"
 import { useDispatch, useSelector } from "react-redux"
 import ProjectsPage from "./components/ProjectsPage"
 import { useEffect } from "react"
 import { setSession } from "./reducers/sessionReducer"
+import ErrorPage from './components/ErrorPage'
 
 function App() {
   const dispatch = useDispatch()
@@ -81,6 +82,7 @@ function App() {
         <Route path="/" element={<ProjectsPage />} />
         <Route path="/archives" element={<Archives />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
 
       {session
