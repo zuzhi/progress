@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchArchives, fetchProjects, unarchiveProject } from '../reducers/projectReducer'
+import { deleteProject, fetchArchives, fetchProjects, unarchiveProject } from '../reducers/projectReducer'
 import { useEffect, useState } from 'react'
 
 const Topic = ({ topic }) => {
@@ -37,6 +37,7 @@ const Project = ({ project }) => {
         {project.name} - {project.progress}%
       </span>
       <span className='buttons'>
+        <button className='button' onClick={() => dispatch(deleteProject(project))}>delete</button>
         <button className='button' onClick={() => dispatch(unarchiveProject(project))}>unarchive</button>
       </span>
       <button className='button' onClick={toggleCollapse}>

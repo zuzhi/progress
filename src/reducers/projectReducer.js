@@ -102,11 +102,17 @@ export const initializeProjects = () => {
 
 export const deleteProject = (project) => {
   return async (dispatch, getState) => {
-    const projects = getState().projects.list
     if (window.confirm(`delete ${project.name}?`)) {
       await projectService.deleteProject(project)
-      const newProjects = projects.filter(p => p.id !== project.id)
-      dispatch(setProjects(newProjects))
+      if (project.status === 'normal') {
+        const projects = getState().projects.list
+        const newProjects = projects.filter(p => p.id !== project.id)
+        dispatch(setProjects(newProjects))
+      } else {
+        const archives = getState().projects.archives
+        const newArchives = archives.filter(p => p.id !== project.id)
+        dispatch(setArchives(newArchives))
+      }
     }
   }
 }
