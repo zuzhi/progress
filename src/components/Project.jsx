@@ -11,7 +11,8 @@ const Project = ({
   handleProjectEdit,
   onTopicEdit,
   onTopicAdd,
-  openInEditor
+  openInEditor,
+  viewAsTree
 }) => {
   const dispatch = useDispatch()
   const session = useSelector(state => state.session)
@@ -64,6 +65,7 @@ const Project = ({
         <button className='button' onClick={() => dispatch(deleteProject(project))}>delete</button>
         <button className='button' onClick={() => dispatch(archiveProject(project))}>archive</button>
         <button className='button' onClick={() => openInEditor(project)}>open in editor</button>
+        <button className='button' onClick={() => viewAsTree(project)}>view as tree</button>
       </span>
       <button className='button' onClick={toggleCollapse}>
         {isCollapsed ? '[' + (project.topics ? project.topics.length : 0) + ' more]' : '[-]'}

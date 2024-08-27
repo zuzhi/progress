@@ -59,6 +59,13 @@ span.project.archived {
 
 .column {
   flex: 50%;
+  display: flex;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+  border: 1px solid #828282;
 }
 
 /* Styles for mobile screens */

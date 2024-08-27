@@ -6,7 +6,8 @@ const Projects = ({
   onProjectEdit,
   onTopicEdit,
   onTopicAdd,
-  openInEditor
+  openInEditor,
+  viewAsTree
 }) => {
 
   const dispatch = useDispatch()
@@ -29,6 +30,7 @@ const Projects = ({
             onTopicEdit={onTopicEdit}
             onTopicAdd={onTopicAdd}
             openInEditor={openInEditor}
+            viewAsTree={viewAsTree}
           />
         )
       }

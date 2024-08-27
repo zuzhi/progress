@@ -14,6 +14,7 @@ import {
   updateProject
 } from "../reducers/projectReducer"
 import PageTitle from "./PageTitle"
+import TreePlot from "./TreePlot"
 
 const ProjectsPage = () => {
   const [projectFormVisible, setProjectFormVisible] = useState(false)
@@ -27,6 +28,7 @@ const ProjectsPage = () => {
   const topicEditFormVisibleRef = useRef()
   const topicEditFormRef = useRef()
   const editorFormVisibleRef = useRef()
+  const treePlotVisibleRef = useRef()
 
   const dispatch = useDispatch()
   const session = useSelector(state => state.session)
@@ -124,6 +126,11 @@ const ProjectsPage = () => {
     dispatch(setSelectedProject(project))
   }
 
+  const handleViewAsTree = (project) => {
+    treePlotVisibleRef.current.setVisible(true)
+    dispatch(setSelectedProject(project))
+  }
+
   return (
     <>
       <PageTitle title="home" />
@@ -136,11 +143,19 @@ const ProjectsPage = () => {
             onProjectEdit={handleProjectEdit}
             onTopicEdit={handleTopicEdit}
             openInEditor={handleOpenInEditor}
+            viewAsTree={handleViewAsTree}
           />
         </div>
         <div className='column container'>
           <Togglable ref={editorFormVisibleRef}>
             <EditorForm combinedContent={combinedContent} />
+          </Togglable>
+        </div>
+      </div>
+      <div className="row">
+        <div className="column">
+          <Togglable ref={treePlotVisibleRef}>
+            <TreePlot />
           </Togglable>
         </div>
       </div>
