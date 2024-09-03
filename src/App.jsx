@@ -79,10 +79,13 @@ function App() {
       </div>
 
       <Routes>
-        <Route path="/" element={<ProjectsPage />} />
-        <Route path="/archives" element={<Archives />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route path="/" element={<ProjectsPage />} /> {/* '/' auth ? dashboard : homepage */}
+        {/* ':user-name?tab=projects' projects */}
+        <Route path="/archives" element={<Archives />} /> {/* ':user-name?tab=archives' archives */}
+        {/* ':user-name' profile */}
+        {/* ':user-name/:project-name' archived ? archived project : project */}
+        <Route path="/login" element={<LoginPage />} /> {/* '/login' login */}
+        <Route path="*" element={<ErrorPage />} /> {/* '/*' everything else */}
       </Routes>
 
       {session
