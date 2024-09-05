@@ -66,7 +66,7 @@ const nestTopics = (topics) => {
 
 export const fetchProjects = () => {
   return async dispatch => {
-    const projects = await projectService.getAllWithReference()
+    const projects = await projectService.getProjectsWithReference()
     if (projects) {
       const transformedProjects = transformProjects(projects)
       dispatch(setProjects(transformedProjects))
@@ -86,7 +86,7 @@ export const fetchArchives = () => {
 
 export const initializeProjects = () => {
   return async dispatch => {
-    const projects = await projectService.getAllWithReference()
+    const projects = await projectService.getProjectsWithReference()
     const archives = await projectService.getArchivesWithReference()
     if (projects) {
       const transformedProjects = transformProjects(projects)

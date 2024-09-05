@@ -102,7 +102,7 @@ export const createTopic = (topic, userId) => {
         status: 'pending',
         user_id: userId
       })
-    const projects = await projectService.getAllWithReference()
+    const projects = await projectService.getProjectsWithReference()
     const transformedProjects = transformProjects(projects)
     const updatedProjects = await updateProgress(transformedProjects, savedTopic.project_id)
     dispatch(setProjects(updatedProjects))
@@ -149,7 +149,7 @@ export const initProject = (project, newTopics, userId) => {
         indentTracker[indentLevel] = created.id
       }
     }
-    const projects = await projectService.getAllWithReference()
+    const projects = await projectService.getProjectsWithReference()
     const transformedProjects = transformProjects(projects)
     dispatch(setProjects(transformedProjects))
   }

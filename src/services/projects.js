@@ -30,7 +30,33 @@ const getOne = async (projectId) => {
   }
 }
 
-const getAllWithReference = async () => {
+const getProjectsCount = async () => {
+  let { count, error } = await supabase
+    .from('projects')
+    .select('*', { count: 'exact' })
+    .eq('status', 'normal')
+
+  if (error) {
+    console.log(error)
+  }
+
+  return count
+}
+
+const getArchivesCount = async () => {
+  let { count, error } = await supabase
+    .from('projects')
+    .select('*', { count: 'exact' })
+    .eq('status', 'archived')
+
+  if (error) {
+    console.log(error)
+  }
+
+  return count
+}
+
+const getProjectsWithReference = async () => {
   let { data: projects, error } = await supabase
     .from('projects')
     .select(`
@@ -161,7 +187,9 @@ const unarchiveProject = async (project) => {
 export default {
   getAll,
   getOne,
-  getAllWithReference,
+  getProjectsCount,
+  getArchivesCount,
+  getProjectsWithReference,
   getArchivesWithReference,
   create,
   update,

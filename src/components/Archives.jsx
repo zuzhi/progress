@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteProject, fetchArchives, fetchProjects, unarchiveProject } from '../reducers/projectReducer'
-import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteProject, unarchiveProject } from '../reducers/projectReducer'
+import { useState } from 'react'
 import PageTitle from './PageTitle'
 
 const Topic = ({ topic }) => {
@@ -64,14 +64,7 @@ const Project = ({ project }) => {
   )
 }
 
-const Projects = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(fetchArchives())
-  }, [dispatch])
-
-  const archives = useSelector(state => state.projects.archives)
-
+const Projects = ({ archives }) => {
   return (
     <ul>
       {
@@ -86,11 +79,11 @@ const Projects = () => {
   )
 }
 
-const Archives = () => {
+const Archives = ({ archives }) => {
   return (
     <>
       <PageTitle title="archives" />
-      <Projects />
+      <Projects archives={archives} />
     </>
   )
 }

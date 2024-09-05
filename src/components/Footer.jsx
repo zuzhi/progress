@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     < div >
       <span className="footer">
-        {session?.user.email.split('@')[0]} |
+        {session?.user.email} |
       </span>
       <button
         className='button'

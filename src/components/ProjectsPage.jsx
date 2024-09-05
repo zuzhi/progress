@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import EditorForm from "./EditorForm"
 import Projects from "./Projects"
 import Togglable from "./Togglable"
@@ -9,7 +9,6 @@ import ProjectEditForm from "./ProjectEditForm"
 import { updateTopic } from "../reducers/topicReducer"
 import {
   createProject,
-  fetchProjects,
   setSelectedProject,
   updateProject
 } from "../reducers/projectReducer"
@@ -32,10 +31,7 @@ const ProjectsPage = () => {
 
   const dispatch = useDispatch()
   const session = useSelector(state => state.session)
-
-  useEffect(() => {
-    dispatch(fetchProjects())
-  }, [dispatch])
+  const projects = useSelector(state => state.projects.list)
 
   const handleProjectFormVisibleChange = (visible) => {
     setProjectFormVisible(visible)
@@ -133,13 +129,14 @@ const ProjectsPage = () => {
 
   return (
     <>
-      <PageTitle title="home" />
+      <PageTitle title="projects" />
       {projectForm()}
       {projectEditForm()}
       {topicEditForm()}
       <div className='row'>
         <div className='column'>
           <Projects
+            projects={projects}
             onProjectEdit={handleProjectEdit}
             onTopicEdit={handleTopicEdit}
             openInEditor={handleOpenInEditor}

@@ -1,8 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux'
 import Project from './Project'
 import { archiveProject, deleteProject } from '../reducers/projectReducer'
+import { useDispatch } from 'react-redux'
 
 const Projects = ({
+  projects,
   onProjectEdit,
   onTopicEdit,
   onTopicAdd,
@@ -11,7 +12,6 @@ const Projects = ({
 }) => {
 
   const dispatch = useDispatch()
-  const projects = useSelector(state => state.projects.list)
 
   return (
     <ul>
