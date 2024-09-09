@@ -53,7 +53,7 @@ const ProjectEditForm = forwardRef(({ onProjectUpdate, isVisible }, refs) => {
 
   return (
     <div>
-      <p><b>edit project</b></p>
+      <p className="font-bold">edit project</p>
       <form onSubmit={onSubmit}>
         <input
           hidden
@@ -61,11 +61,12 @@ const ProjectEditForm = forwardRef(({ onProjectUpdate, isVisible }, refs) => {
           onChange={event => setId(event.target.value)}
         />
         <input
+          className="mt-1 px-1 border border-gray-300 rounded-sm text-sm shadow-sm"
           ref={inputRef}
           value={newProject}
           onChange={event => setNewProject(event.target.value)}
         />
-        <button className="button" type="submit">save</button>
+        <button className="font-mono pl-1.5 text-xs hover:underline text-[#828282]" type="submit">save</button>
       </form>
     </div>
   )

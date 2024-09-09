@@ -7,7 +7,7 @@ const ErrorPage = () => {
   return (
     <>
       <PageTitle title="404" />
-      <div id="error-page">
+      <div className="font-mono text-[#828282]">
         <p>
           <i>{location.pathname} =&gt; </i>
           404 Not Found

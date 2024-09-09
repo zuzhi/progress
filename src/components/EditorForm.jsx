@@ -52,12 +52,12 @@ const EditorForm = ({ combinedContent }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p><b>project editor</b></p>
+      <p className="font-bold">project editor</p>
       <div className='form-group'>
-        <label>{project?.name}</label>
+        <label className="font-medium">{project?.name}</label>
         <Editor ref={quillRef} content={combinedContent} />
       </div>
-      <button type="submit">save</button>
+      <button className="pl-1.5 text-xs hover:underline text-[#828282]" type="submit">save</button>
     </form>
   )
 }

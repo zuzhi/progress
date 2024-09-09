@@ -14,7 +14,7 @@ const Projects = ({
   const dispatch = useDispatch()
 
   return (
-    <ul>
+    <ul className='pl-4 list-disc list-outside [&_ul]:list-[revert]'>
       {
         projects.map(project =>
           <Project

@@ -1,23 +1,23 @@
 const HowToUse = () => {
   return (
-    <div className='howtouse'>
-      <h3>
-        how to use <span className='product-name'>progress</span>?
-      </h3>
-      <ul>
+    <div>
+      <div className="text-lg font-medium py-4">
+        how to use <span className='font-mono font-bold'>progress</span>?
+      </div>
+      <ul className="pl-4 list-decimal list-outside">
         <li>register</li>
         <li>add a project</li>
         <li>add some topics</li>
         <li>update topic status</li>
       </ul>
-      <p>then the project progress will automatically be calculated, yeah, that&apos;s the whole point.</p>
-      <p>
+      <p className="pt-2">then the project progress will automatically be calculated, yeah, that&apos;s the whole point.</p>
+      <div className="text-lg font-medium py-4">
         for example:
-      </p>
-      <ul>
+      </div>
+      <ul className="list-none">
         <li>
           <b>fullstackopen - 75%</b>
-          <ul>
+          <ul className="pl-4 list-disc list-outside">
             <li><s>Part 0: Fundamentals of Web apps</s></li>
             <li><s>Part 1: Introduction to React</s></li>
             <li><s>Part 2: Communicating with server</s></li>

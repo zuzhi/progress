@@ -35,23 +35,31 @@ const Topic = ({
     </Togglable>
   )
 
+  const statusClasses = {
+    done: 'line-through',
+    pendig: '',
+    'in progress': 'font-medium',
+    skip: 'text-[#828282]',
+    skim: 'text-[#828282] line-through'
+  }
+
   return (
     <li>
-      <span className={topic.status.replace(' ', '-')}>
+      <span className={statusClasses[topic.status]}>
         {topic.name}
       </span>
       <span className='buttons'>
-        <button className='button' onClick={() => onTopicEdit(topic)}>edit</button>
-        <button className='button' onClick={() => dispatch(deleteTopic(topic))}>delete</button>
-        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'pending'))}>pending</button>
-        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'in progress'))}>in progress</button>
-        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'done'))}>done</button>
-        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'skip'))}>skip</button>
-        <button className='button' onClick={() => dispatch(updateTopicStatus(topic, 'skim'))}>skim</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => onTopicEdit(topic)}>edit</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(deleteTopic(topic))}>delete</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(updateTopicStatus(topic, 'pending'))}>pending</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(updateTopicStatus(topic, 'in progress'))}>in progress</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(updateTopicStatus(topic, 'done'))}>done</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(updateTopicStatus(topic, 'skip'))}>skip</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(updateTopicStatus(topic, 'skim'))}>skim</button>
       </span>
       {topicForm()}
       {topic.topics && topic.topics.length > 0 && (
-        <ul>
+        <ul className='pl-4 list-disc list-outside space-y-1'>
           {topic.topics.map(subTopic => (
             <Topic
               key={subTopic.id}

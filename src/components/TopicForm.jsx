@@ -23,11 +23,12 @@ const TopicForm = ({ onTopicCreate, isVisible }) => {
     <div>
       <form onSubmit={addTopic}>
         <input
+          className="mt-1 px-1 border border-gray-300 rounded-sm text-sm shadow-sm"
           ref={inputRef}
           value={newTopic}
           onChange={event => setNewTopic(event.target.value)}
         />
-        <button className="button" type="submit">save</button>
+        <button className="pl-1.5 text-xs hover:underline text-[#828282]" type="submit">save</button>
       </form>
     </div>
   )

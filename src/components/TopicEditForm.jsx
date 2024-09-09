@@ -53,7 +53,7 @@ const TopicEditForm = forwardRef(({ onTopicUpdate, isVisible }, refs) => {
 
   return (
     <div>
-      <p><b>Edit topic</b></p>
+      <p className="font-bold">Edit topic</p>
       <form onSubmit={onSubmit}>
         <input
           hidden
@@ -61,11 +61,12 @@ const TopicEditForm = forwardRef(({ onTopicUpdate, isVisible }, refs) => {
           onChange={event => setId(event.target.value)}
         />
         <input
+          className="mt-1 px-1 border border-gray-300 rounded-sm text-sm shadow-sm"
           ref={inputRef}
           value={newTopic}
           onChange={event => setNewTopic(event.target.value)}
         />
-        <button className="button" type="submit">save</button>
+        <button className="pl-1.5 text-xs hover:underline text-[#828282]" type="submit">save</button>
       </form>
     </div>
   )

@@ -57,17 +57,17 @@ const Project = ({
 
   return (
     <li>
-      <span className='project'>
+      <span className='font-bold'>
         {project.name} - {project.progress}%
       </span>
       <span className='buttons'>
-        <button className='button' onClick={() => handleProjectEdit(project)}>edit</button>
-        <button className='button' onClick={() => dispatch(deleteProject(project))}>delete</button>
-        <button className='button' onClick={() => dispatch(archiveProject(project))}>archive</button>
-        <button className='button' onClick={() => openInEditor(project)}>open in editor</button>
-        <button className='button' onClick={() => viewAsTree(project)}>view as tree</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => handleProjectEdit(project)}>edit</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(deleteProject(project))}>delete</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(archiveProject(project))}>archive</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => openInEditor(project)}>open in editor</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => viewAsTree(project)}>view as tree</button>
       </span>
-      <button className='button' onClick={toggleCollapse}>
+      <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={toggleCollapse}>
         {isCollapsed ? '[' + (project.topics ? project.topics.length : 0) + ' more]' : '[-]'}
       </button>
       {!isCollapsed && (
@@ -75,7 +75,7 @@ const Project = ({
           {topicForm()}
           {
             project.topics && (
-              <ul>
+              <ul className='pl-4 list-disc list-outside [&_ul]:list-[revert]'>
                 {project.topics.map(topic => (
                   <Topic
                     key={topic.id}

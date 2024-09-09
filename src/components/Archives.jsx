@@ -4,13 +4,21 @@ import { useState } from 'react'
 import PageTitle from './PageTitle'
 
 const Topic = ({ topic }) => {
+  const statusClasses = {
+    done: 'line-through',
+    pendig: '',
+    'in progress': 'font-medium',
+    skip: 'text-[#828282]',
+    skim: 'text-[#828282] line-through'
+  }
+
   return (
     <li>
-      <span className={topic.status.replace(' ', '-')}>
+      <span className={statusClasses[topic.status]}>
         {topic.name}
       </span>
       {topic.topics && topic.topics.length > 0 && (
-        <ul>
+        <ul className='pl-4 list-disc list-outside'>
           {topic.topics.map(subTopic => (
             <Topic
               key={subTopic.id}
@@ -34,21 +42,21 @@ const Project = ({ project }) => {
 
   return (
     <li>
-      <span className='project archived'>
+      <span className='text-[#828282]'>
         {project.name} - {project.progress}%
       </span>
       <span className='buttons'>
-        <button className='button' onClick={() => dispatch(deleteProject(project))}>delete</button>
-        <button className='button' onClick={() => dispatch(unarchiveProject(project))}>unarchive</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(deleteProject(project))}>delete</button>
+        <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={() => dispatch(unarchiveProject(project))}>unarchive</button>
       </span>
-      <button className='button' onClick={toggleCollapse}>
+      <button className='pl-1.5 text-xs hover:underline text-[#828282]' onClick={toggleCollapse}>
         {isCollapsed ? '[' + (project.topics ? project.topics.length : 0) + ' more]' : '[-]'}
       </button>
       {!isCollapsed && (
         <div className='collapseContent'>
           {
             project.topics && (
-              <ul>
+              <ul className='pl-4 list-disc list-outside'>
                 {project.topics.map(topic => (
                   <Topic
                     key={topic.id}
@@ -66,7 +74,7 @@ const Project = ({ project }) => {
 
 const Projects = ({ archives }) => {
   return (
-    <ul>
+    <ul className='pl-4 list-disc list-outside [&_ul]:list-[revert]'>
       {
         archives.map(project =>
           <Project

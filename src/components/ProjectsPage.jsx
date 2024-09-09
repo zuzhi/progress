@@ -133,29 +133,19 @@ const ProjectsPage = () => {
       {projectForm()}
       {projectEditForm()}
       {topicEditForm()}
-      <div className='row'>
-        <div className='column'>
-          <Projects
-            projects={projects}
-            onProjectEdit={handleProjectEdit}
-            onTopicEdit={handleTopicEdit}
-            openInEditor={handleOpenInEditor}
-            viewAsTree={handleViewAsTree}
-          />
-        </div>
-        <div className='column container'>
-          <Togglable ref={editorFormVisibleRef}>
-            <EditorForm combinedContent={combinedContent} />
-          </Togglable>
-        </div>
-      </div>
-      <div className="row">
-        <div className="column">
-          <Togglable ref={treePlotVisibleRef}>
-            <TreePlot />
-          </Togglable>
-        </div>
-      </div>
+      <Projects
+        projects={projects}
+        onProjectEdit={handleProjectEdit}
+        onTopicEdit={handleTopicEdit}
+        openInEditor={handleOpenInEditor}
+        viewAsTree={handleViewAsTree}
+      />
+      <Togglable ref={editorFormVisibleRef}>
+        <EditorForm combinedContent={combinedContent} />
+      </Togglable>
+      <Togglable ref={treePlotVisibleRef}>
+        <TreePlot />
+      </Togglable>
     </>
   )
 }

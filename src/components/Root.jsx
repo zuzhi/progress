@@ -36,55 +36,50 @@ const Root = () => {
     return () => subscription.unsubscribe()
   }, [dispatch, navigate])
 
-  const padding = {
-    paddingLeft: 10
-  }
-
   return (
     <>
-      <div className="header">
-        <NavLink
-          to="/"
-          className={({ isActive, isPending }) =>
-            (isActive
-              ? "active"
-              : isPending
-                ? "pending"
-                : "")
-            + " product-name"
+      <div className='container max-w-2xl mx-auto p-4'>
+        <div className="font-mono flex items-end pb-2.5">
+          <NavLink
+            to="/"
+            className={({ isActive, isPending }) =>
+              (isActive
+                ? "underline"
+                : isPending
+                  ? "no-underline"
+                  : "")
+              + " text-black hover:underline"
+            }
+          >
+            <span className='text-xl font-bold'>progress</span>
+          </NavLink>
+          {session
+            ?
+            <>
+              <CustomNavLink
+                to={session.user.email + "?tab=projects"}
+                name="projects"
+              />
+              <CustomNavLink
+                to={session.user.email + "?tab=archives"}
+                name="archives"
+              />
+              <CustomNavLink
+                to={session.user?.email}
+                name="profile"
+              />
+            </>
+            : <></>
           }
-        >
-          <b>progress</b>
-        </NavLink>
-        {session
-          ?
-          <>
-            <CustomNavLink
-              padding={padding}
-              to={session.user.email + "?tab=projects"}
-              name="projects"
-            />
-            <CustomNavLink
-              padding={padding}
-              to={session.user.email + "?tab=archives"}
-              name="archives"
-            />
-            <CustomNavLink
-              padding={padding}
-              to={session.user?.email}
-              name="profile"
-            />
-          </>
-          : <></>
-        }
-      </div>
+        </div>
 
-      {/* all the other elements  */}
-      <div id="detail">
-        <Outlet />
-      </div>
+        {/* all the other elements  */}
+        <div id="detail">
+          <Outlet />
+        </div>
 
-      <Footer />
+        <Footer />
+      </div>
 
       <Analytics />
       <SpeedInsights />

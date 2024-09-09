@@ -10,11 +10,11 @@ const Footer = () => {
 
   return (
     < div >
-      <span className="footer">
+      <span className="text-xs text-[#828282]">
         {session?.user.email} |
       </span>
       <button
-        className='button'
+        className='pl-1.5 text-xs hover:underline text-[#828282]'
         onClick={async () => {
           const { error } = await supabase.auth.signOut()
           if (error) {
